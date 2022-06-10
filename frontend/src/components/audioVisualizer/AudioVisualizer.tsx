@@ -8,7 +8,7 @@ import {
   Mesh,
   ArcRotateCamera,
   Color4,
-  BlurPostProcess, Vector2, ImageProcessingPostProcess, MotionBlurPostProcess, Matrix, Camera, Vector4
+  Matrix, Vector4
 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
