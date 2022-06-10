@@ -1,16 +1,16 @@
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { AudioContainer, MenuButton } from "../songsDisplayer/SongsDisplayerElements";
+import { AudioContainer} from "../songsDisplayer/SongsDisplayerElements";
 import { useAudioContext } from "../../contexts/AudioContext";
 import { Divider, Drawer, Stack, Typography } from "@mui/material";
-import { MdAudiotrack } from "react-icons/md";
 import { SongButton } from "./SongButton";
+import { useVisualizerContext } from "../../contexts/VisualizerContext";
 
 export const SongsDisplayer = () => {
   const [availableSongs, setAvailableSongs] = useState<string[]>();
-  const { audioData, setAudioData } = useAudioContext();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const {audioData, setAudioData} = useAudioContext();
+  const {menus, setMenusVisibility} = useVisualizerContext();
 
   const fetchDefaultAudio = useCallback(async () => {
     const response = await axios.get("api/v1/audio/default");
@@ -46,11 +46,10 @@ export const SongsDisplayer = () => {
 
   return (
     <>
-      <MenuButton onClick={() => setMenuOpen(!menuOpen)}
-                  variant="contained">
-        <MdAudiotrack size={35} />
-      </MenuButton>
-      <Drawer anchor="left" open={menuOpen} onClose={() => setMenuOpen(false)}>
+      <Drawer anchor="left"
+              open={menus?.songsVisible}
+              onClose={() => setMenusVisibility({...menus, songsVisible: !menus.songsVisible})}>
+
         <AudioContainer>
           <Typography variant="h5"
                       component="h1"
@@ -58,7 +57,7 @@ export const SongsDisplayer = () => {
                       color="text.primary"
                       fontWeight="bold"
                       marginBottom="0.35em">
-            Default songs
+            Sample songs
           </Typography>
           <Stack direction="column"
                  spacing={0.5}
@@ -67,6 +66,7 @@ export const SongsDisplayer = () => {
             {availableSongs?.map(x => <SongButton songName={x} songUrl={x} onClick={onPlayAudioClicked} />)}
           </Stack>
         </AudioContainer>
+
       </Drawer>
     </>
   );

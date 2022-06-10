@@ -1,13 +1,13 @@
 import * as React from "react";
-import { SongsDisplayer } from "../components/songsDisplayer/SongsDisplayer";
 import { AudioVisualizer } from "../components/audioVisualizer/AudioVisualizer";
+import { VisualizerPropertiesMenu } from "../components/visualizerPropertiesMenu/VisualizerPropertiesMenu";
 
 export const Visualizer = () => {
   return (
     <>
-      <SongsDisplayer/>
-      <AudioVisualizer/>
+      <VisualizerPropertiesMenu />
+      <AudioVisualizer />
     </>
   );
-}
+};
 
