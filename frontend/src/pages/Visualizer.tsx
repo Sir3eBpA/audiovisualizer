@@ -1,12 +1,14 @@
 import * as React from "react";
 import { AudioVisualizer } from "../components/audioVisualizer/AudioVisualizer";
-import { VisualizerPropertiesMenu } from "../components/visualizerPropertiesMenu/VisualizerPropertiesMenu";
+import { VisualizerMenu } from "../components/visualizerMenu/VisualizerMenu";
+import { ShareButton } from "../components/shareButton/ShareButton";
 
 export const Visualizer = () => {
   return (
     <>
-      <VisualizerPropertiesMenu />
+      <VisualizerMenu />
       <AudioVisualizer />
+      <ShareButton onClick={() => {}}/>
     </>
   );
 };

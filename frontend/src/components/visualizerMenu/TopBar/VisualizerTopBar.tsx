@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { MenuButton } from "../../songsDisplayer/SongsDisplayerElements";
 import { MdAudiotrack, MdOutlineSettingsInputComponent } from "react-icons/md";
-import { Container } from "./VisualizerPropertiesBarElements";
+import { Container } from "./VisualizerTopBarElements";
 
 export type PropertiesBarSettings = {
   onSampleSongsClicked: () => void,
   onVisualizerPropertiesClicked: () => void,
 }
 
-export const VisualizerPropertiesBar = (props: PropertiesBarSettings) => {
+export const VisualizerTopBar = (props: PropertiesBarSettings) => {
   return (
     <Container>
       <MenuButton onClick={() => props.onSampleSongsClicked()} variant="contained">
