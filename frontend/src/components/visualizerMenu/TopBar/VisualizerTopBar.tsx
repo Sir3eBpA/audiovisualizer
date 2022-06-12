@@ -2,6 +2,8 @@ import React from "react";
 import { MenuButton } from "../../songsDisplayer/SongsDisplayerElements";
 import { MdAudiotrack, MdOutlineSettingsInputComponent } from "react-icons/md";
 import { Container } from "./VisualizerTopBarElements";
+import Tooltip from "@mui/material/Tooltip";
+import { TooltipText } from "../../../shared/SharedStyles";
 
 export type PropertiesBarSettings = {
   onSampleSongsClicked: () => void,
@@ -11,13 +13,17 @@ export type PropertiesBarSettings = {
 export const VisualizerTopBar = (props: PropertiesBarSettings) => {
   return (
     <Container>
-      <MenuButton onClick={() => props.onSampleSongsClicked()} variant="contained">
-        <MdAudiotrack size={35} />
-      </MenuButton>
+      <Tooltip title={<TooltipText>Sample songs (CC0 license)</TooltipText>} arrow placement="bottom">
+        <MenuButton onClick={() => props.onSampleSongsClicked()} variant="contained">
+          <MdAudiotrack size={35} />
+        </MenuButton>
+      </Tooltip>
 
-      <MenuButton onClick={() => props.onVisualizerPropertiesClicked()} variant="contained">
-        <MdOutlineSettingsInputComponent size={42} />
-      </MenuButton>
+      <Tooltip title={<TooltipText>Visualizer settings</TooltipText>} arrow placement="bottom">
+        <MenuButton onClick={() => props.onVisualizerPropertiesClicked()} variant="contained">
+          <MdOutlineSettingsInputComponent size={42} />
+        </MenuButton>
+      </Tooltip>
     </Container>
   );
 };
