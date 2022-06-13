@@ -3,6 +3,7 @@ import { VisualizerTopBar } from "./TopBar/VisualizerTopBar";
 import { SongsDisplayer } from "../songsDisplayer/SongsDisplayer";
 import { useVisualizerContext } from "../../contexts/VisualizerContext";
 import { PropertiesDisplayer } from "../visualizerProperties/PropertiesDisplayer";
+import { ScreenShake } from "../visualizerProperties/properties/screenShake/ScreenShake";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
@@ -13,7 +14,9 @@ export const VisualizerMenu = () => {
                         onVisualizerPropertiesClicked={() => setMenusVisibility({...menus, settingsVisible: !menus.settingsVisible})}/>
 
       <SongsDisplayer/>
-      <PropertiesDisplayer/>
+      <PropertiesDisplayer>
+          <ScreenShake/>
+      </PropertiesDisplayer>
     </>
   );
 }
