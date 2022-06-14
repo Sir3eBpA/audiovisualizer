@@ -9,7 +9,7 @@ import { GroupSwitch } from "../../genericProperties/groupSwitch/GroupSwitch";
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 import { DropdownProperty } from "../../genericProperties/dropdownProperty/DropdownProperty";
 
-export const ScreenShake = () => {
+export const ColorGradient = () => {
   const [active, setActive] = useState(false);
   const [age, setAge] = React.useState("");
 
@@ -18,7 +18,7 @@ export const ScreenShake = () => {
   };
 
   return (
-    <GroupSwitch text="Screenshake" active={active} setActive={setActive}>
+    <GroupSwitch text="Colors" active={active} setActive={setActive}>
       <MinMaxNumber title="Min/Max" onChanged={onMinMaxChanged} />
       <FieldAccordeon title="Step">
         <TextField margin="dense"

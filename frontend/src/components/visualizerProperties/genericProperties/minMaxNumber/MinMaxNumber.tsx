@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Container, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Container, Paper, TextField, Typography } from "@mui/material";
 import { MdExpandMore } from "react-icons/md";
 
 export type MinMaxNumberSettings = {
@@ -16,7 +16,7 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
   }, [minVal, maxVal]);
 
   return (
-    <Accordion>
+    <Accordion disableGutters>
       <AccordionSummary
         expandIcon={<MdExpandMore />}
         aria-controls="panel1a-content"

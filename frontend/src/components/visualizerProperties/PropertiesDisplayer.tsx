@@ -4,7 +4,7 @@ import { Drawer } from "@mui/material";
 import { PropertiesContainer } from "./PropertiesDisplayerElements";
 
 export type PropertiesDisplayerSettings = {
-  children?: ReactElement
+  children?: ReactElement | ReactElement[]
 }
 
 export const PropertiesDisplayer = (props: PropertiesDisplayerSettings) => {
