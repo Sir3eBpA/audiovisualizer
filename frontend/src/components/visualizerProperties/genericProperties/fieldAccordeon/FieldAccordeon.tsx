@@ -1,10 +1,12 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
 import { MdExpandMore } from "react-icons/md";
 import React, { ReactElement } from "react";
+import { Container } from "./FieldAccordeonElements";
 
 export type FieldAccordeonSettings = {
   title: string;
-  children?: ReactElement;
+  rowGap?: number|string;
+  children?: ReactElement | ReactElement[];
 }
 
 export const FieldAccordeon = (props: FieldAccordeonSettings) => {
@@ -18,7 +20,9 @@ export const FieldAccordeon = (props: FieldAccordeonSettings) => {
         <Typography>{props.title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        {props.children}
+        <Container rowGap={props.rowGap}>
+          {props.children}
+        </Container>
       </AccordionDetails>
     </Accordion>
   );
