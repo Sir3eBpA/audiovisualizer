@@ -1,37 +1,32 @@
 import React, { useState } from "react";
 import {
-  Box, MenuItem,
-  Select,
   TextField
 } from "@mui/material";
-import { MinMaxNumber } from "../../genericProperties/minMaxNumber/MinMaxNumber";
 import { GroupSwitch } from "../../genericProperties/groupSwitch/GroupSwitch";
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
-import { DropdownProperty } from "../../genericProperties/dropdownProperty/DropdownProperty";
+import { ColorPicker } from "../../genericProperties/colorPicker/ColorPicker";
 
 export const ColorGradient = () => {
   const [active, setActive] = useState(false);
-  const [age, setAge] = React.useState("");
 
-  const onMinMaxChanged = (min: number, max: number) => {
-    console.log("%f ; %f", min, max);
-  };
+  const [minColor, setMinColor] = useState("");
+  const [maxColor, setMaxColor] = useState("");
 
   return (
     <GroupSwitch text="Colors" active={active} setActive={setActive}>
-      <MinMaxNumber title="Min/Max" onChanged={onMinMaxChanged} />
-      <FieldAccordeon title="Step">
+      <FieldAccordeon title="Color gradient">
+          <ColorPicker label="Min" setColor={setMinColor} />
+          <ColorPicker label="Max" setColor={setMaxColor} />
+      </FieldAccordeon>
+      <FieldAccordeon title="Color step">
         <TextField margin="dense"
-                   label="Screenshake threshold"
+                   label="Color threshold"
                    size="small"
                    variant="outlined"
                    type="number"
-                   onChange={e => {}} />
+                   onChange={e => {
+                   }} />
       </FieldAccordeon>
-      <DropdownProperty value={age} setValue={setAge} folded title="Mode">
-        <MenuItem value="single">Single</MenuItem>
-        <MenuItem value="group">Group</MenuItem>
-      </DropdownProperty>
     </GroupSwitch>
   );
 };
