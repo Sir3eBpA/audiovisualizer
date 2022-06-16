@@ -8,7 +8,7 @@ import {
   Mesh,
   ArcRotateCamera,
   Color4,
-  Matrix, Vector4
+  Matrix, Vector4, Camera, Angle
 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
@@ -28,7 +28,6 @@ const onSceneReady = (scene: Scene) => {
   camera = new ArcRotateCamera("camera", -1.6, 1.6, 83, new Vector3(boxesCount-2.5, 1, 0), scene);
   // Disable panning (RMB movement)
   camera.panningSensibility = 0;
-
   defaultFov = camera.fov;
 
   const canvas = scene.getEngine().getRenderingCanvas();
@@ -61,6 +60,13 @@ const onSceneReady = (scene: Scene) => {
 
     boxes.push(box);
   }
+
+  scene.getEngine().onResizeObservable.add(() => {
+    const canvas = scene.getEngine().getRenderingCanvas();
+    if (!canvas)
+      return;
+
+  })
 };
 
 const onBeforeCameraRender = () => {
@@ -91,6 +97,7 @@ const onRender = (scene: Scene) => {
 
     //camera.fov = defaultFov + ((accumulatedAudio / 35) * 0.05);
     console.log(accumulatedAudio);
+    //console.log(scene.getEngine().getFps().toFixed() + " fps");
   }
 
 };

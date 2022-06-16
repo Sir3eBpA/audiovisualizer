@@ -11,12 +11,12 @@ export type MenusVisibility = {
 
 export type VisualizerState = {
   menus: MenusVisibility,
-  setMenusVisibility: (data: MenusVisibility) => void
+  setMenusVisibility: (data: MenusVisibility) => void,
 }
 
 export const VisualizerContext = createContext<VisualizerState>({
   menus: { settingsVisible: false, songsVisible: false },
-  setMenusVisibility: () => {}
+  setMenusVisibility: () => {},
 });
 
 export const useVisualizerContext = () => useContext(VisualizerContext);
