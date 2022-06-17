@@ -4,7 +4,7 @@ import { SongsDisplayer } from "../songsDisplayer/SongsDisplayer";
 import { useVisualizerContext } from "../../contexts/VisualizerContext";
 import { PropertiesDisplayer } from "../visualizerProperties/PropertiesDisplayer";
 import { ScreenShake } from "../visualizerProperties/properties/screenShake/ScreenShake";
-import { ColorGradient } from "../visualizerProperties/properties/colorGradient/ColorGradient";
+import { ColorLerp } from "../visualizerProperties/properties/colorLerp/ColorLerp";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
@@ -18,7 +18,7 @@ export const VisualizerMenu = () => {
 
       <PropertiesDisplayer>
         <ScreenShake />
-        <ColorGradient />
+        <ColorLerp />
       </PropertiesDisplayer>
     </>
   );
