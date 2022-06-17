@@ -11,7 +11,7 @@ export const VisualsContainer = styled.div`
   background: linear-gradient(90deg, #030101, #d71a1a, #000000);
   background-size: cover;
   background-blend-mode: screen;
-  animation: hue-rotate 1.5s linear infinite;
+  //animation: hue-rotate 1.5s linear infinite;
   box-shadow: inset 0 0 150px black;
 
   @keyframes hue-rotate {

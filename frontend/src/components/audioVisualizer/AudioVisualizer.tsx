@@ -1,17 +1,22 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  Vector3,
-  HemisphericLight,
-  MeshBuilder,
-  Scene,
-  Mesh,
   ArcRotateCamera,
   Color4,
-  Matrix, Vector4, Camera, Angle
+  HemisphericLight,
+  Matrix,
+  Mesh,
+  MeshBuilder,
+  Scene, StandardMaterial,
+  Vector3,
+  Vector4
 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
+import { AudioInput } from "./AudioInput";
+import { useModifiersContext } from "../../contexts/ModifiersContext";
+import { VisualizerExtension } from "./extensions/VisualizerExtension";
+import { ColorLerpExtension } from "./extensions/colorLerp/ColorLerpExtension";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -22,13 +27,27 @@ let projectionMatrix: Matrix;
 let r: Vector4;
 let t: number;
 let defaultFov: number;
+const audioInput = new AudioInput();
+let extensions: VisualizerExtension[];
 
-const onSceneReady = (scene: Scene) => {
+const updateExtensions = (inputData: any) => {
+  extensions = [
+    new ColorLerpExtension(inputData)
+  ];
+
+  for(let i = 0; i < extensions.length; ++i) {
+    extensions[i].initialize();
+  }
+}
+
+const onSceneReady = (scene: Scene, inputData: any) => {
   // This creates and positions a free camera (non-mesh)
   camera = new ArcRotateCamera("camera", -1.6, 1.6, 83, new Vector3(boxesCount-2.5, 1, 0), scene);
   // Disable panning (RMB movement)
   camera.panningSensibility = 0;
   defaultFov = camera.fov;
+
+  updateExtensions(inputData);
 
   const canvas = scene.getEngine().getRenderingCanvas();
   scene.clearColor = new Color4(0,0,0,0);
@@ -57,25 +76,19 @@ const onSceneReady = (scene: Scene) => {
     // Move the box upward 1/2 its height
     box.position.y = 1;
     box.position.x = i * 2;
+    box.material = new StandardMaterial("box"+i, scene);
 
     boxes.push(box);
   }
-
-  scene.getEngine().onResizeObservable.add(() => {
-    const canvas = scene.getEngine().getRenderingCanvas();
-    if (!canvas)
-      return;
-
-  })
 };
 
 const onBeforeCameraRender = () => {
-  if(r && activeAudioData?.analyser) {
-    r.x += Math.cos(t) * 0.45;
-    r.y += Math.sin(t) * 1.25;
-    projectionMatrix.setRowFromFloats(3, r.x, r.y, r.z, r.w);
-    t += 81337.18;
-  }
+  // if(r && activeAudioData?.analyser) {
+  //   r.x += Math.cos(t) * 0.45;
+  //   r.y += Math.sin(t) * 1.25;
+  //   projectionMatrix.setRowFromFloats(3, r.x, r.y, r.z, r.w);
+  //   t += 81337.18;
+  // }
 }
 
 /**
@@ -95,15 +108,25 @@ const onRender = (scene: Scene) => {
       boxes[i].scaling.set(1, audioValue * 15, 1);
     }
 
+    audioInput.update(numPoints, accumulatedAudio, audioDataArray);
+
+    for(let i = 0; i < extensions.length; ++i) {
+      extensions[i].process(boxes, audioInput);
+    }
+
     //camera.fov = defaultFov + ((accumulatedAudio / 35) * 0.05);
     console.log(accumulatedAudio);
     //console.log(scene.getEngine().getFps().toFixed() + " fps");
   }
-
 };
+
+const onSceneDisposed = () => {
+  console.log("unmounted audio visualizer!");
+}
 
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
+  const { data } = useModifiersContext();
   activeAudioData = audioData || undefined;
 
   useEffect(() => {
@@ -117,9 +140,16 @@ export const AudioVisualizer = () => {
     }
   }, [audioData]);
 
+  useEffect(() => {
+    updateExtensions(data);
+  }, [data]);
+
+  // call to clean up the scene on component unmount
+  useEffect(() => () => onSceneDisposed(), []);
+
   return (
     <VisualsContainer>
-      <BabylonScene antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
+      <BabylonScene antialias onSceneReady={e => onSceneReady(e, data)} onRender={onRender} id="my-canvas" />
     </VisualsContainer>
   );
 };
