@@ -4,12 +4,14 @@ import { MdExpandMore } from "react-icons/md";
 
 export type MinMaxNumberSettings = {
   title: string,
+  min?: number,
+  max?: number,
   onChanged: (min: number, max: number) => void,
 };
 
 export const MinMaxNumber = (props: MinMaxNumberSettings) => {
-  const [minVal, setMinVal] = useState(0);
-  const [maxVal, setMaxVal] = useState(0);
+  const [minVal, setMinVal] = useState(props.min || 0);
+  const [maxVal, setMaxVal] = useState(props.max || 1);
 
   useEffect(() => {
     props.onChanged(minVal, maxVal);
@@ -31,6 +33,7 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
                      size="small"
                      variant="outlined"
                      type="number"
+                     defaultValue={minVal}
                      onChange={e => setMinVal(parseFloat(e.target.value))} />
 
           <TextField margin="dense"
@@ -38,6 +41,7 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
                      size="small"
                      variant="outlined"
                      type="number"
+                     defaultValue={maxVal}
                      onChange={e => setMaxVal(parseFloat(e.target.value))} />
         </div>
       </AccordionDetails>
