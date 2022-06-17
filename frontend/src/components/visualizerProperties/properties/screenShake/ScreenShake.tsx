@@ -1,34 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Box, MenuItem,
-  Select,
+  MenuItem,
   TextField
 } from "@mui/material";
 import { MinMaxNumber } from "../../genericProperties/minMaxNumber/MinMaxNumber";
 import { GroupSwitch } from "../../genericProperties/groupSwitch/GroupSwitch";
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 import { DropdownProperty } from "../../genericProperties/dropdownProperty/DropdownProperty";
+import { useModifiersContext } from "../../../../contexts/ModifiersContext";
+import { Modifiers } from "../../../../Constants";
 
 export const ScreenShake = () => {
-  const [active, setActive] = useState(false);
-  const [age, setAge] = React.useState("");
+  const { data, setData } = useModifiersContext();
+  const shakeData = data[Modifiers.SCREENSHAKE_KEY];
 
   const onMinMaxChanged = (min: number, max: number) => {
-    console.log("%f ; %f", min, max);
+    shakeData["min"] = min;
+    shakeData["max"] = max;
+    setData({...data, data});
   };
 
+  const onGroupSetActive = (active: boolean) => {
+    shakeData["active"] = active;
+    setData({...data, data});
+  }
+
+  const onModeChanged = (value: any) => {
+    shakeData["mode"] = value;
+    setData({...data, data});
+  }
+
   return (
-    <GroupSwitch text="Screenshake" active={active} setActive={setActive}>
-      <MinMaxNumber title="Min/Max" onChanged={onMinMaxChanged} />
-      <FieldAccordeon title="Step">
-        <TextField margin="dense"
-                   label="Screenshake threshold"
-                   size="small"
-                   variant="outlined"
-                   type="number"
-                   onChange={e => {}} />
-      </FieldAccordeon>
-      <DropdownProperty value={age} setValue={setAge} folded title="Mode">
+    <GroupSwitch text="Screenshake"
+                 active={shakeData["active"] || false}
+                 setActive={onGroupSetActive}>
+      <MinMaxNumber min={shakeData["min"]}
+                    max={shakeData["max"]}
+                    title="Min/Max"
+                    onChanged={onMinMaxChanged} />
+      <DropdownProperty value={shakeData["mode"] || "Single"}
+                        setValue={onModeChanged}
+                        folded title="Mode">
         <MenuItem value="single">Single</MenuItem>
         <MenuItem value="group">Group</MenuItem>
       </DropdownProperty>

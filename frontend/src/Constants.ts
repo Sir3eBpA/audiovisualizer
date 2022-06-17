@@ -1,3 +1,4 @@
 export const Modifiers = {
-  COLOR_GRADIENT_KEY: "color_gradient"
+  COLOR_LERP_KEY: "color_lerp",
+  SCREENSHAKE_KEY: "screenshake"
 }

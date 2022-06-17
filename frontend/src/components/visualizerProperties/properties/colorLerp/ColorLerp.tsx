@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   TextField
 } from "@mui/material";
@@ -8,13 +8,13 @@ import { ColorPicker } from "../../genericProperties/colorPicker/ColorPicker";
 import { useModifiersContext } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
 
-export const ColorGradient = () => {
+export const ColorLerp = () => {
   const { data, setData } = useModifiersContext();
+  const colorData = data[Modifiers.COLOR_LERP_KEY];
 
-  const colorData = data[Modifiers.COLOR_GRADIENT_KEY];
-
-  const colorChanged = (field: string, value: any) => {
-    setData(data);
+  const onColorChanged = (field: string, value: any) => {
+    colorData[field] = value;
+    setData({...data, data});
   }
 
   const onGroupSetActive = (active: boolean) => {
@@ -29,9 +29,14 @@ export const ColorGradient = () => {
 
   return (
     <GroupSwitch text="Colors" active={colorData["active"] || false} setActive={onGroupSetActive}>
-      <FieldAccordeon title="Color gradient">
-          <ColorPicker label="Min" setColor={() => {}} />
-          <ColorPicker label="Max" setColor={() => {}} />
+      <FieldAccordeon title="Colors range">
+          <ColorPicker label="Min"
+                       color={colorData["min"]}
+                       setColor={color => onColorChanged("min", color)} />
+
+          <ColorPicker label="Max"
+                       color={colorData["max"]}
+                       setColor={color => onColorChanged("max", color)} />
       </FieldAccordeon>
       <FieldAccordeon title="Color step">
         <TextField margin="dense"
