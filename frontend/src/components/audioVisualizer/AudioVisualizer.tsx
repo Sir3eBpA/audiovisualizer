@@ -17,11 +17,12 @@ import { AudioInput } from "./AudioInput";
 import { useModifiersContext } from "../../contexts/ModifiersContext";
 import { VisualizerExtension } from "./extensions/VisualizerExtension";
 import { ColorLerpExtension } from "./extensions/colorLerp/ColorLerpExtension";
+import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
-let boxesCount = 64;
+let boxesCount = 96;
 let camera: ArcRotateCamera;
 let projectionMatrix: Matrix;
 let r: Vector4;
@@ -32,7 +33,8 @@ let extensions: VisualizerExtension[];
 
 const updateExtensions = (inputData: any) => {
   extensions = [
-    new ColorLerpExtension(inputData)
+    new ColorLerpExtension(inputData),
+    new BoxesScaleExtension(inputData),
   ];
 
   for(let i = 0; i < extensions.length; ++i) {
@@ -42,7 +44,7 @@ const updateExtensions = (inputData: any) => {
 
 const onSceneReady = (scene: Scene, inputData: any) => {
   // This creates and positions a free camera (non-mesh)
-  camera = new ArcRotateCamera("camera", -1.6, 1.6, 83, new Vector3(boxesCount-2.5, 1, 0), scene);
+  camera = new ArcRotateCamera("camera", -1.6, 1.6, 83, new Vector3(0, 1, 0), scene);
   // Disable panning (RMB movement)
   camera.panningSensibility = 0;
   defaultFov = camera.fov;
@@ -72,14 +74,17 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   for(let i = 0; i < boxesCount; ++i) {
     // Our built-in 'box' shape.
-    const box = MeshBuilder.CreateBox("box", { size: 1.5 }, scene);
+    const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
     // Move the box upward 1/2 its height
-    box.position.y = 1;
-    box.position.x = i * 2;
+    box.position.y = 0;
+    box.position.x = i * 1.2;
     box.material = new StandardMaterial("box"+i, scene);
 
     boxes.push(box);
   }
+
+  const centralCube = boxes[boxesCount/2-1];
+  camera.setTarget(centralCube.position.clone());
 };
 
 const onBeforeCameraRender = () => {
@@ -105,7 +110,6 @@ const onRender = (scene: Scene) => {
       const ndx = i * numPoints / boxes.length | 0;
       const audioValue = audioDataArray[ndx] / 255.0 + 0.01;
       accumulatedAudio += audioDataArray[ndx] / 255.0;
-      boxes[i].scaling.set(1, audioValue * 15, 1);
     }
 
     audioInput.update(numPoints, accumulatedAudio, audioDataArray);
@@ -115,7 +119,6 @@ const onRender = (scene: Scene) => {
     }
 
     //camera.fov = defaultFov + ((accumulatedAudio / 35) * 0.05);
-    console.log(accumulatedAudio);
     //console.log(scene.getEngine().getFps().toFixed() + " fps");
   }
 };
