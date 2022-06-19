@@ -5,6 +5,7 @@ import { useVisualizerContext } from "../../contexts/VisualizerContext";
 import { PropertiesDisplayer } from "../visualizerProperties/PropertiesDisplayer";
 import { ScreenShake } from "../visualizerProperties/properties/screenShake/ScreenShake";
 import { ColorLerp } from "../visualizerProperties/properties/colorLerp/ColorLerp";
+import { BoxesScale } from "../visualizerProperties/properties/boxesScale/BoxesScale";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
@@ -19,6 +20,7 @@ export const VisualizerMenu = () => {
       <PropertiesDisplayer>
         <ScreenShake />
         <ColorLerp />
+        <BoxesScale />
       </PropertiesDisplayer>
     </>
   );
