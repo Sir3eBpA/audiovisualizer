@@ -6,6 +6,7 @@ import { MinMaxNumber } from "../../genericProperties/minMaxNumber/MinMaxNumber"
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 import { Switch, Typography } from "@mui/material";
 import { InlineContainer, SwitchLabel } from "../../../../shared/SharedStyles";
+import { GroupAccordeon } from "../../genericProperties/groupAccordeon/GroupAccordeon";
 
 export const BoxesScale = () => {
   const { data, setData } = useModifiersContext();
@@ -28,7 +29,7 @@ export const BoxesScale = () => {
   };
 
   return (
-    <GroupSwitch text="Boxes scale" active={scaleData["active"] || false} setActive={onGroupSetActive}>
+    <GroupAccordeon text="Boxes scale" active={scaleData["active"] || false} setActive={onGroupSetActive}>
       <MinMaxNumber title="Height"
                     min={scaleData["minHeight"]}
                     max={scaleData["maxHeight"]}
@@ -42,6 +43,6 @@ export const BoxesScale = () => {
         </InlineContainer>
       </FieldAccordeon>
 
-    </GroupSwitch>
+    </GroupAccordeon>
   );
 };

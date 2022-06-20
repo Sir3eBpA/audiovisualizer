@@ -18,7 +18,8 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
   }, [minVal, maxVal]);
 
   return (
-    <Accordion disableGutters>
+    <Accordion disableGutters
+               defaultExpanded={true}>
       <AccordionSummary
         expandIcon={<MdExpandMore />}
         aria-controls="panel1a-content"

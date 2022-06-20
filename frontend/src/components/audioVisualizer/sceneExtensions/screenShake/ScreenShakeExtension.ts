@@ -1,4 +1,3 @@
-import { Modifiers } from "../../../../Constants";
 import { SceneExtension } from "../SceneExtension";
 import { Scene } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";

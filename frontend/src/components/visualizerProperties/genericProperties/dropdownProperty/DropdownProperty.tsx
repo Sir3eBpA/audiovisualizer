@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Paper, TextField, Typography } from "@mui/material";
 import React, { ReactElement } from "react";
 import { MdExpandMore } from "react-icons/md";
+import { FieldAccordeon } from "../fieldAccordeon/FieldAccordeon";
 
 export type DropdownPropertySettings = {
   value: any,
@@ -30,17 +31,8 @@ export const DropdownProperty = (props: DropdownPropertySettings) => {
   }
 
   return (
-    <Accordion disableGutters>
-      <AccordionSummary
-        expandIcon={<MdExpandMore />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography>{props.title}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        {element}
-      </AccordionDetails>
-    </Accordion>
+    <FieldAccordeon title={props.title || "%NO_NAME%"}>
+      {element}
+    </FieldAccordeon>
   );
 };

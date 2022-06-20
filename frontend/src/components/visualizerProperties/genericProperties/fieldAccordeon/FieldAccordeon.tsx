@@ -11,12 +11,12 @@ export type FieldAccordeonSettings = {
 
 export const FieldAccordeon = (props: FieldAccordeonSettings) => {
   return (
-    <Accordion disableGutters>
+    <Accordion disableGutters
+               defaultExpanded={true}>
       <AccordionSummary
         expandIcon={<MdExpandMore />}
         aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
+        id="panel1a-header">
         <Typography>{props.title}</Typography>
       </AccordionSummary>
       <AccordionDetails>

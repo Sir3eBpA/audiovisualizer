@@ -1,4 +1,4 @@
-import { Box, Paper, Switch } from "@mui/material";
+import { Box, Paper, Switch, Typography } from "@mui/material";
 import React, { ReactElement } from "react";
 
 export type GroupSwitchSettings = {
