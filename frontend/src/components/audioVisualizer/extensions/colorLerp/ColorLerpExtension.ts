@@ -13,8 +13,10 @@ export class ColorLerpExtension extends VisualizerExtension {
   }
 
   initialize() {
-    if(this._inputData["min"] && this._inputData["max"]) {
+    if (this._inputData["min"]) {
       this._startColor = Color3.FromHexString(this._inputData["min"]);
+    }
+    if (this._inputData["max"]) {
       this._endColor = Color3.FromHexString(this._inputData["max"]);
     }
   }

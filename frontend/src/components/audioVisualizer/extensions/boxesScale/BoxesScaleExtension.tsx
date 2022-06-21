@@ -16,8 +16,6 @@ export class BoxesScaleExtension extends VisualizerExtension {
   }
 
   process(visuals: Mesh[], audioData: AudioInput): void {
-    const pivotPoint = new Vector3(0, 0, 0);
-
     const minHeight = this._inputData["minHeight"] || 0.1;
     const maxHeight = this._inputData["maxHeight"] || 15.0;
     const alignHeight = this._inputData["alignHeight"] || false;
