@@ -18,49 +18,58 @@ import { useModifiersContext } from "../../contexts/ModifiersContext";
 import { VisualizerExtension } from "./extensions/VisualizerExtension";
 import { ColorLerpExtension } from "./extensions/colorLerp/ColorLerpExtension";
 import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension";
+import { SceneExtension } from "./sceneExtensions/SceneExtension";
+import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeExtension";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
 let boxesCount = 96;
 let camera: ArcRotateCamera;
-let projectionMatrix: Matrix;
-let r: Vector4;
-let t: number;
 let defaultFov: number;
 const audioInput = new AudioInput();
 let extensions: VisualizerExtension[];
+let sceneExtensions: SceneExtension[];
+let activeFrame: number = 0;
+let lastUpdateFrame: number = -1;
+let activeScene: Scene;
 
 const updateExtensions = (inputData: any) => {
   extensions = [
     new ColorLerpExtension(inputData),
-    new BoxesScaleExtension(inputData),
+    new BoxesScaleExtension(inputData)
   ];
 
-  for(let i = 0; i < extensions.length; ++i) {
+  sceneExtensions = [
+    new ScreenShakeExtension(inputData)
+  ];
+
+  for (let i = 0; i < extensions.length; ++i) {
     extensions[i].initialize();
   }
-}
+
+  for(let i = 0; i < sceneExtensions.length; ++i) {
+    sceneExtensions[i].initialize(activeScene);
+  }
+};
 
 const onSceneReady = (scene: Scene, inputData: any) => {
   // This creates and positions a free camera (non-mesh)
-  camera = new ArcRotateCamera("camera", -1.6, 1.6, 83, new Vector3(0, 1, 0), scene);
+  camera = new ArcRotateCamera("camera", -0.95, 1.6, 93, new Vector3(0, 1, 0), scene);
   // Disable panning (RMB movement)
   camera.panningSensibility = 0;
   defaultFov = camera.fov;
 
+  activeScene = scene;
+
   updateExtensions(inputData);
 
   const canvas = scene.getEngine().getRenderingCanvas();
-  scene.clearColor = new Color4(0,0,0,0);
+  scene.clearColor = new Color4(0, 0, 0, 0);
   scene.postProcessesEnabled = true;
 
   // This attaches the camera to the canvas
   camera.attachControl(canvas, true);
-
-  projectionMatrix = camera.getProjectionMatrix();
-  r = projectionMatrix.getRow(3) || new Vector4(0,0,0,0);
-  t = 0;
 
   scene.registerBeforeRender(onBeforeCameraRender);
 
@@ -72,29 +81,50 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   boxes = [];
 
-  for(let i = 0; i < boxesCount; ++i) {
+  for (let i = 0; i < boxesCount; ++i) {
     // Our built-in 'box' shape.
     const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
     // Move the box upward 1/2 its height
     box.position.y = 0;
     box.position.x = i * 1.2;
-    box.material = new StandardMaterial("box"+i, scene);
+    box.material = new StandardMaterial("box" + i, scene);
 
     boxes.push(box);
   }
 
-  const centralCube = boxes[boxesCount/2-1];
+  const centralCube = boxes[boxesCount / 2 - 1];
   camera.setTarget(centralCube.position.clone());
 };
 
 const onBeforeCameraRender = () => {
-  // if(r && activeAudioData?.analyser) {
-  //   r.x += Math.cos(t) * 0.45;
-  //   r.y += Math.sin(t) * 1.25;
-  //   projectionMatrix.setRowFromFloats(3, r.x, r.y, r.z, r.w);
-  //   t += 81337.18;
-  // }
-}
+  if(activeAudioData?.analyser) {
+    for(let i = 0; i < sceneExtensions.length; ++i) {
+      sceneExtensions[i].onBeforeSceneRender(activeScene, boxes, audioInput);
+    }
+  }
+};
+
+const updateAudioData = () => {
+  if (boxes.length === 0 || !activeAudioData?.analyser)
+    return;
+
+  // optimization, only run update audio once per frame
+  if(activeFrame === lastUpdateFrame)
+    return;
+
+  lastUpdateFrame = activeFrame;
+
+  const numPoints = activeAudioData.analyser.frequencyBinCount;
+  activeAudioData.analyser.getByteFrequencyData(audioDataArray);
+  let accumulatedAudio = 0;
+
+  for (let i = 0; i < boxes.length; ++i) {
+    const ndx = i * numPoints / boxes.length | 0;
+    accumulatedAudio += audioDataArray[ndx] / 255.0;
+  }
+
+  audioInput.update(numPoints, accumulatedAudio, audioDataArray);
+};
 
 /**
  * Will run on every frame render.  We are spinning the box on y-axis.
@@ -102,30 +132,21 @@ const onBeforeCameraRender = () => {
 const onRender = (scene: Scene) => {
   if (boxes.length > 0 && activeAudioData?.analyser) {
 
-    const numPoints = activeAudioData.analyser.frequencyBinCount;
-    activeAudioData.analyser.getByteFrequencyData(audioDataArray);
-    let accumulatedAudio = 0;
+    updateAudioData();
 
-    for(let i = 0; i < boxes.length; ++i) {
-      const ndx = i * numPoints / boxes.length | 0;
-      const audioValue = audioDataArray[ndx] / 255.0 + 0.01;
-      accumulatedAudio += audioDataArray[ndx] / 255.0;
-    }
-
-    audioInput.update(numPoints, accumulatedAudio, audioDataArray);
-
-    for(let i = 0; i < extensions.length; ++i) {
+    for (let i = 0; i < extensions.length; ++i) {
       extensions[i].process(boxes, audioInput);
     }
 
     //camera.fov = defaultFov + ((accumulatedAudio / 35) * 0.05);
     //console.log(scene.getEngine().getFps().toFixed() + " fps");
   }
+  ++activeFrame;
 };
 
 const onSceneDisposed = () => {
   console.log("unmounted audio visualizer!");
-}
+};
 
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
@@ -139,7 +160,7 @@ export const AudioVisualizer = () => {
       audio.load();
       audio.play();
 
-      audioDataArray = new Uint8Array(audioData.analyser.frequencyBinCount)
+      audioDataArray = new Uint8Array(audioData.analyser.frequencyBinCount);
     }
   }, [audioData]);
 
