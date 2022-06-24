@@ -4,12 +4,10 @@ import {
   ArcRotateCamera,
   Color4,
   HemisphericLight,
-  Matrix,
   Mesh,
   MeshBuilder,
   Scene, StandardMaterial,
-  Vector3,
-  Vector4
+  Vector3
 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
@@ -20,6 +18,7 @@ import { ColorLerpExtension } from "./extensions/colorLerp/ColorLerpExtension";
 import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension";
 import { SceneExtension } from "./sceneExtensions/SceneExtension";
 import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeExtension";
+import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -41,7 +40,8 @@ const updateExtensions = (inputData: any) => {
   ];
 
   sceneExtensions = [
-    new ScreenShakeExtension(inputData)
+    new ScreenShakeExtension(inputData),
+    new CameraDistanceExtension(inputData),
   ];
 
   for (let i = 0; i < extensions.length; ++i) {

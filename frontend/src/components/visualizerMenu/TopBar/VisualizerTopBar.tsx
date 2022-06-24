@@ -7,7 +7,7 @@ import { TooltipText } from "../../../shared/SharedStyles";
 
 export type PropertiesBarSettings = {
   onSampleSongsClicked: () => void,
-  onVisualizerPropertiesClicked: () => void,
+  onvisualizerModifiersClicked: () => void,
 }
 
 export const VisualizerTopBar = (props: PropertiesBarSettings) => {
@@ -20,7 +20,7 @@ export const VisualizerTopBar = (props: PropertiesBarSettings) => {
       </Tooltip>
 
       <Tooltip title={<TooltipText>Visualizer settings</TooltipText>} arrow placement="bottom">
-        <MenuButton onClick={() => props.onVisualizerPropertiesClicked()} variant="contained">
+        <MenuButton onClick={() => props.onvisualizerModifiersClicked()} variant="contained">
           <MdOutlineSettingsInputComponent size={42} />
         </MenuButton>
       </Tooltip>

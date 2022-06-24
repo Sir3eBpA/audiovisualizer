@@ -2,8 +2,7 @@ import { SceneExtension } from "../SceneExtension";
 import { Matrix, Mesh, Scene, Vector4 } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
-
-enum ShakeMode { Single, Group }
+import { calculateModeMultiplier, getInfluenceModeFromString, InfluenceMode } from "../common/InfluenceMode";
 
 export class ScreenShakeExtension extends SceneExtension {
   private static _ProjectionMatrixCache: Matrix|undefined;
@@ -39,8 +38,8 @@ export class ScreenShakeExtension extends SceneExtension {
   onBeforeSceneRender(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
     if (!this._inputData["active"]) return;
 
-    const mode = this.getModeFromString(this._inputData["mode"] || "single");
-    const modeMultiplier = this.calculateModeMultiplier(mode, visuals.length, audioData);
+    const mode = getInfluenceModeFromString(this._inputData["mode"] || "single");
+    const modeMultiplier = calculateModeMultiplier(mode, visuals.length, audioData);
 
     const x = (this._inputData["min"] || 0) * modeMultiplier;
     const y = (this._inputData["max"] || 0) * modeMultiplier;
@@ -49,35 +48,5 @@ export class ScreenShakeExtension extends SceneExtension {
     this._r.y += Math.sin(this._t) * y;
     this._projectionMatrix.setRowFromFloats(3, this._r.x, this._r.y, this._r.z, this._r.w);
     this._t += 81337.18;
-  }
-
-  private getModeFromString(mode: string) {
-    const lowerCaseMode = mode.toLowerCase();
-    switch (lowerCaseMode) {
-      case "single": return ShakeMode.Single;
-      case "group": return ShakeMode.Group;
-      default: return ShakeMode.Single;
-    }
-  }
-
-  private calculateModeMultiplier(mode: ShakeMode, maxAccumulatedAudio: number, audioData: AudioInput) {
-    if(mode === ShakeMode.Single) {
-      const numPoints = audioData.frequencyBinCount;
-      let highestFrequency: number = 0;
-
-      for (let i = 0; i < maxAccumulatedAudio; ++i) {
-        const ndx = i * numPoints / maxAccumulatedAudio | 0;
-        const freq = audioData.audioData[ndx] / 255.0;
-
-        if(highestFrequency < freq)
-          highestFrequency = freq;
-      }
-      return highestFrequency;
-
-    } else if (mode === ShakeMode.Group) {
-      return audioData.accumulatedAudio / maxAccumulatedAudio;
-    }
-
-    return 1;
   }
 }
