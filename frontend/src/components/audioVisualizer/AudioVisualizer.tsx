@@ -62,8 +62,6 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   activeScene = scene;
 
-  updateExtensions(inputData);
-
   const canvas = scene.getEngine().getRenderingCanvas();
   scene.clearColor = new Color4(0, 0, 0, 0);
   scene.postProcessesEnabled = true;
@@ -94,6 +92,8 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   const centralCube = boxes[boxesCount / 2 - 1];
   camera.setTarget(centralCube.position.clone());
+
+  updateExtensions(inputData);
 };
 
 const onBeforeCameraRender = () => {
@@ -135,11 +135,8 @@ const onRender = (scene: Scene) => {
     updateAudioData();
 
     for (let i = 0; i < extensions.length; ++i) {
-      extensions[i].process(boxes, audioInput);
+      extensions[i].process(scene, boxes, audioInput);
     }
-
-    //camera.fov = defaultFov + ((accumulatedAudio / 35) * 0.05);
-    //console.log(scene.getEngine().getFps().toFixed() + " fps");
   }
   ++activeFrame;
 };

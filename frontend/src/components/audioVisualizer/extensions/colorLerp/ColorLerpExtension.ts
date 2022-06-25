@@ -1,5 +1,5 @@
 import { VisualizerExtension } from "../VisualizerExtension";
-import { AbstractMesh, Color3, StandardMaterial } from "@babylonjs/core";
+import { AbstractMesh, Color3, Scene, StandardMaterial } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
 
@@ -21,7 +21,7 @@ export class ColorLerpExtension extends VisualizerExtension {
     }
   }
 
-  process(visuals: AbstractMesh[], audioData: AudioInput): void {
+  process(scene: Scene, visuals: AbstractMesh[], audioData: AudioInput): void {
     if(!this._inputData["active"]) return;
 
     for(let i = 0; i < visuals.length; ++i) {

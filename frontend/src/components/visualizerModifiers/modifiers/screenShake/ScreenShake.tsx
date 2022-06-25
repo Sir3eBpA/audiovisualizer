@@ -30,6 +30,11 @@ export const ScreenShake = () => {
     setData({...data, data});
   }
 
+  const onShakeSpeedChanged = (value: number) => {
+    shakeData["speed"] = value;
+    setData({...data, data});
+  }
+
   return (
     <GroupSwitch text="Screenshake"
                  active={shakeData["active"] || false}
@@ -44,6 +49,15 @@ export const ScreenShake = () => {
         <MenuItem value="single">Single</MenuItem>
         <MenuItem value="group">Group</MenuItem>
       </DropdownProperty>
+      <FieldAccordeon title="Shake speed">
+        <TextField margin="dense"
+                   label="Speed"
+                   size="small"
+                   variant="outlined"
+                   type="number"
+                   defaultValue={shakeData["speed"] || 100}
+                   onChange={e => onShakeSpeedChanged(parseFloat(e.target.value))} />
+      </FieldAccordeon>
     </GroupSwitch>
   );
 };

@@ -1,5 +1,5 @@
 import { VisualizerExtension } from "../VisualizerExtension";
-import { Mesh, Vector3 } from "@babylonjs/core";
+import { Mesh, Scalar, Scene, Vector3 } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { KeyValueStructure } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
@@ -15,16 +15,20 @@ export class BoxesScaleExtension extends VisualizerExtension {
   initialize(): void {
   }
 
-  process(visuals: Mesh[], audioData: AudioInput): void {
+  process(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
     const minHeight = this._inputData["minHeight"] || 0.1;
     const maxHeight = this._inputData["maxHeight"] || 15.0;
     const alignHeight = this._inputData["alignHeight"] || false;
+    const scaleSpeed = this._inputData["scaleSpeed"] || 100;
+
+    const dt = scene.getEngine().getDeltaTime() / 1000;
 
     for(let i = 0; i < visuals.length; ++i) {
       const ndx = i * audioData.frequencyBinCount / visuals.length | 0;
       const audioValue = audioData.audioData[ndx] / 255.0;
 
-      const height = Math.max((audioValue * maxHeight), minHeight);
+      const targetHeight = Math.max((audioValue * maxHeight), minHeight);
+      const height = Scalar.MoveTowards(visuals[i].scaling.y, targetHeight, scaleSpeed * dt);
       visuals[i].scaling.set(1, height, 1);
 
       if(alignHeight) {
