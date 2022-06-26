@@ -34,10 +34,13 @@ export const BoxesScale = () => {
   }
 
   return (
-    <GroupAccordeon text="Boxes scale" active={scaleData["active"] || false} setActive={onGroupSetActive}>
+    <GroupAccordeon text="Boxes scale"
+                    active={scaleData["active"] || false}
+                    setActive={onGroupSetActive}>
+
       <MinMaxNumber title="Height"
                     min={scaleData["minHeight"]}
-                    max={scaleData["maxHeight"]}
+                    max={scaleData["maxHeight"] || 10}
                     onChanged={onHeightChanged} />
 
       <FieldAccordeon title="Align height">
@@ -47,6 +50,7 @@ export const BoxesScale = () => {
                   onChange={e => onSetAlignHeight(e.target.checked)} />
         </InlineContainer>
       </FieldAccordeon>
+
       <FieldAccordeon title="Scale Speed">
         <TextField margin="dense"
                    label="Scale change speed"
