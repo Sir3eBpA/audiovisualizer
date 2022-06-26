@@ -1,8 +1,9 @@
 import { SceneExtension } from "../SceneExtension";
-import { ArcRotateCamera, Mesh, Scene } from "@babylonjs/core";
+import { ArcRotateCamera, Mesh, Scalar, Scene } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
 import { calculateModeMultiplier, getInfluenceModeFromString } from "../common/InfluenceMode";
+import { Time } from "../../../../engine/Time";
 
 export class CameraDistanceExtension extends SceneExtension {
   private static radius: number = 0;
@@ -30,7 +31,10 @@ export class CameraDistanceExtension extends SceneExtension {
     const x = (this._inputData["min"] || 0) * modeMultiplier;
     const y = (this._inputData["max"] || 0) * modeMultiplier;
 
+    const speed = this._inputData["speed"] || 100;
     const cam = scene._activeCamera as ArcRotateCamera;
-    cam.radius = CameraDistanceExtension.radius + Math.random() * y - x;
+
+    const finalRadius = Scalar.MoveTowards(cam.radius, CameraDistanceExtension.radius + Math.random() * y - x, speed * Time.Dt);
+    cam.radius = finalRadius;
   }
 }

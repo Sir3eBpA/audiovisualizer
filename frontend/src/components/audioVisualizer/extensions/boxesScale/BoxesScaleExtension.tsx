@@ -3,6 +3,7 @@ import { Mesh, Scalar, Scene, Vector3 } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { KeyValueStructure } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
+import { Time } from "../../../../engine/Time";
 
 export class BoxesScaleExtension extends VisualizerExtension {
   protected _inputData: KeyValueStructure;
@@ -21,14 +22,12 @@ export class BoxesScaleExtension extends VisualizerExtension {
     const alignHeight = this._inputData["alignHeight"] || false;
     const scaleSpeed = this._inputData["scaleSpeed"] || 100;
 
-    const dt = scene.getEngine().getDeltaTime() / 1000;
-
     for(let i = 0; i < visuals.length; ++i) {
       const ndx = i * audioData.frequencyBinCount / visuals.length | 0;
       const audioValue = audioData.audioData[ndx] / 255.0;
 
       const targetHeight = Math.max((audioValue * maxHeight), minHeight);
-      const height = Scalar.MoveTowards(visuals[i].scaling.y, targetHeight, scaleSpeed * dt);
+      const height = Scalar.MoveTowards(visuals[i].scaling.y, targetHeight, scaleSpeed * Time.Dt);
       visuals[i].scaling.set(1, height, 1);
 
       if(alignHeight) {
