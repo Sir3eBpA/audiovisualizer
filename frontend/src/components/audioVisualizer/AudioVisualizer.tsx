@@ -19,6 +19,7 @@ import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension
 import { SceneExtension } from "./sceneExtensions/SceneExtension";
 import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeExtension";
 import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
+import { Time } from "../../engine/Time";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -130,6 +131,9 @@ const updateAudioData = () => {
  * Will run on every frame render.  We are spinning the box on y-axis.
  */
 const onRender = (scene: Scene) => {
+
+  Time.Dt = scene.getEngine().getDeltaTime() / 1000;
+
   if (boxes.length > 0 && activeAudioData?.analyser) {
 
     updateAudioData();
