@@ -1,6 +1,14 @@
 export const Modifiers = {
-  COLOR_LERP_KEY: "color_lerp",
-  SCREENSHAKE_KEY: "screenshake",
-  BOXES_SCALE_KEY: "boxes_scale",
-  CAM_DISTANCE_KEY: "fov",
+  COLOR_LERP: "color_lerp",
+  SCREENSHAKE: "screenshake",
+  BOXES_SCALE: "boxes_scale",
+  CAM_DISTANCE: "fov",
+  BACKGROUND: "bg"
+}
+
+export const Defaults = {
+  "bg": {
+    "vignetteRadius": 100,
+    "vignetteColor": "black"
+  }
 }

@@ -3,7 +3,7 @@ import { AudioContext, AudioData} from "./contexts/AudioContext";
 import { useState } from "react";
 import { MenusVisibility, VisualizerContext} from "./contexts/VisualizerContext";
 import { ModifiersContext } from "./contexts/ModifiersContext";
-import { Modifiers } from "./Constants";
+import { Defaults, Modifiers } from "./Constants";
 
 interface ChildrenProps {
   children: React.ReactNode;
@@ -11,7 +11,9 @@ interface ChildrenProps {
 
 const BuildModifiersList = () => {
   const modifiers = Object.values(Modifiers);
-  return Object.fromEntries(modifiers.map(key => [key, {}]));
+  let data = Object.fromEntries(modifiers.map(key => [key, {}]));
+  data = Object.assign(data, Defaults);
+  return data;
 }
 
 export const AppContexts = ({children}: ChildrenProps) => {
