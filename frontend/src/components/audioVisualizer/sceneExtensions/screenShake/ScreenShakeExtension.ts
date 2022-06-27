@@ -14,7 +14,7 @@ export class ScreenShakeExtension extends SceneExtension {
 
   constructor(inputData: any) {
     super(inputData);
-    this._inputData = inputData[Modifiers.SCREENSHAKE_KEY];
+    this._inputData = inputData[Modifiers.SCREENSHAKE];
   }
 
   initialize(scene: Scene): void {

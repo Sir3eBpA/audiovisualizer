@@ -10,7 +10,7 @@ export class CameraDistanceExtension extends SceneExtension {
 
   constructor(inputData: any) {
     super(inputData);
-    this._inputData = inputData[Modifiers.CAM_DISTANCE_KEY];
+    this._inputData = inputData[Modifiers.CAM_DISTANCE];
   }
 
   initialize(scene: Scene): void {

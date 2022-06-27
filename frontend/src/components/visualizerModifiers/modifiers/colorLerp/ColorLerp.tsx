@@ -10,7 +10,7 @@ import { Modifiers } from "../../../../Constants";
 
 export const ColorLerp = () => {
   const { data, setData } = useModifiersContext();
-  const colorData = data[Modifiers.COLOR_LERP_KEY];
+  const colorData = data[Modifiers.COLOR_LERP];
 
   const onColorChanged = (field: string, value: any) => {
     colorData[field] = value;

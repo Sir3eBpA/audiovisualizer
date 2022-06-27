@@ -7,6 +7,7 @@ import { ColorLerp } from "../visualizerModifiers/modifiers/colorLerp/ColorLerp"
 import { BoxesScale } from "../visualizerModifiers/modifiers/boxesScale/BoxesScale";
 import { PropertiesDisplayer } from "../visualizerModifiers/PropertiesDisplayer";
 import { CameraDistanceChanger } from "../visualizerModifiers/modifiers/cameraDistanceChanger/CameraDistanceChanger";
+import { BackgroundChanger } from "../visualizerModifiers/modifiers/background/BackgroundChanger";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
@@ -23,6 +24,7 @@ export const VisualizerMenu = () => {
         <ColorLerp />
         <CameraDistanceChanger />
         <BoxesScale />
+        <BackgroundChanger />
       </PropertiesDisplayer>
     </>
   );

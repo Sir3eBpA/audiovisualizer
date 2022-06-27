@@ -10,7 +10,7 @@ export class BoxesScaleExtension extends VisualizerExtension {
 
   constructor(inputData: any) {
     super(inputData);
-    this._inputData = inputData[Modifiers.BOXES_SCALE_KEY];
+    this._inputData = inputData[Modifiers.BOXES_SCALE];
   }
 
   initialize(): void {

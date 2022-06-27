@@ -12,7 +12,7 @@ import { Modifiers } from "../../../../Constants";
 
 export const ScreenShake = () => {
   const { data, setData } = useModifiersContext();
-  const shakeData = data[Modifiers.SCREENSHAKE_KEY];
+  const shakeData = data[Modifiers.SCREENSHAKE];
 
   const onMinMaxChanged = (min: number, max: number) => {
     shakeData["min"] = min;

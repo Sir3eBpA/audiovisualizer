@@ -9,7 +9,7 @@ export class ColorLerpExtension extends VisualizerExtension {
 
   constructor(inputData: any) {
     super(inputData);
-    this._inputData = inputData[Modifiers.COLOR_LERP_KEY];
+    this._inputData = inputData[Modifiers.COLOR_LERP];
   }
 
   initialize() {

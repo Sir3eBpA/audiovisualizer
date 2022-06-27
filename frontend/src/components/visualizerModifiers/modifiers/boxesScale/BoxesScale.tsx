@@ -10,7 +10,7 @@ import { GroupAccordeon } from "../../genericProperties/groupAccordeon/GroupAcco
 
 export const BoxesScale = () => {
   const { data, setData } = useModifiersContext();
-  const scaleData = data[Modifiers.BOXES_SCALE_KEY];
+  const scaleData = data[Modifiers.BOXES_SCALE];
 
   const onGroupSetActive = (active: boolean) => {
     scaleData["active"] = active;

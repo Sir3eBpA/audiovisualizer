@@ -9,7 +9,7 @@ import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAcco
 
 export const CameraDistanceChanger = () => {
   const { data, setData } = useModifiersContext();
-  const camDistanceData = data[Modifiers.CAM_DISTANCE_KEY];
+  const camDistanceData = data[Modifiers.CAM_DISTANCE];
 
   const onGroupSetActive = (active: boolean) => {
     camDistanceData["active"] = active;

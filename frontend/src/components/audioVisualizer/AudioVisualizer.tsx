@@ -20,6 +20,8 @@ import { SceneExtension } from "./sceneExtensions/SceneExtension";
 import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeExtension";
 import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
 import { Time } from "../../engine/Time";
+import { Modifiers } from "../../Constants";
+import { CreateGradientBackground, CreateSolidBackground, CreateVignette } from "../../utils/CssUtils";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -149,6 +151,14 @@ const onSceneDisposed = () => {
   console.log("unmounted audio visualizer!");
 };
 
+export const CreateBackground = (type: string, data: any) => {
+  switch (type) {
+    default:
+    case "solid": return CreateSolidBackground(data["bgColor"]);
+    case "gradient": return CreateGradientBackground(data["bgColors"])
+  }
+}
+
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
   const { data } = useModifiersContext();
@@ -172,9 +182,17 @@ export const AudioVisualizer = () => {
   // call to clean up the scene on component unmount
   useEffect(() => () => onSceneDisposed(), []);
 
+  const bgData = data[Modifiers.BACKGROUND];
+  const vignette = CreateVignette(bgData["vignetteRadius"], bgData["vignetteColor"]);
+  const background = CreateBackground(bgData["type"], bgData);
+
   return (
-    <VisualsContainer>
-      <BabylonScene antialias onSceneReady={e => onSceneReady(e, data)} onRender={onRender} id="my-canvas" />
+    <VisualsContainer background={background}
+                      boxShadow={vignette}>
+      <BabylonScene antialias
+                    onSceneReady={e => onSceneReady(e, data)}
+                    onRender={onRender}
+                    id="my-canvas" />
     </VisualsContainer>
   );
 };
