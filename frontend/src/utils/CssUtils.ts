@@ -18,3 +18,7 @@ export const CreateGradientBackground = (colors: string[], angle: number = 90) :
 
   return `linear-gradient(${angle}deg, ${colors.filter(x => null != x)})`;
 }
+
+export const CreateAnimation = (animType: string, playbackSpeed: number) : string => {
+  return `${animType} ${playbackSpeed}s linear infinite`;
+}

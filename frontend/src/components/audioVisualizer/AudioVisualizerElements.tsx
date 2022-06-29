@@ -3,6 +3,7 @@ import SceneComponent from "babylonjs-hook";
 
 export interface Background {
   background?: string,
+  animation?: string,
   boxShadow?: string,
 }
 
@@ -14,9 +15,9 @@ export const VisualsContainer = styled.div<Background>`
   // set z-index to be negative because DOM renders at 0 and higher
   z-index: -1;
   background: ${props => props.background || "linear-gradient(90deg, #030101, #d71a1a, #000000)"};
-  background-size: cover;
+  background-size: 400% 400%;
   background-blend-mode: screen;
-  //animation: hue-rotate 1.5s linear infinite;
+  animation: ${props => props.animation || "none"}; //hue-rotate 1.5s linear infinite;
   box-shadow: ${props => props.boxShadow || "inset 0 0 150px black"};
 
   @keyframes hue-rotate {
@@ -30,7 +31,20 @@ export const VisualsContainer = styled.div<Background>`
       -moz-filter: hue-rotate(360deg);
       filter: hue-rotate(360deg);
     }
-  }`;
+  }
+
+  @keyframes infinite-scroll {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+`;
 
 export const BabylonScene = styled(SceneComponent)`
   width: 100%;

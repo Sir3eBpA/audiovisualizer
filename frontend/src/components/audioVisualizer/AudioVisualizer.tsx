@@ -21,14 +21,13 @@ import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeE
 import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
 import { Time } from "../../engine/Time";
 import { Modifiers } from "../../Constants";
-import { CreateGradientBackground, CreateSolidBackground, CreateVignette } from "../../utils/CssUtils";
+import { CreateAnimation, CreateGradientBackground, CreateSolidBackground, CreateVignette } from "../../utils/CssUtils";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
 let boxesCount = 96;
 let camera: ArcRotateCamera;
-let defaultFov: number;
 const audioInput = new AudioInput();
 let extensions: VisualizerExtension[];
 let sceneExtensions: SceneExtension[];
@@ -44,14 +43,14 @@ const updateExtensions = (inputData: any) => {
 
   sceneExtensions = [
     new ScreenShakeExtension(inputData),
-    new CameraDistanceExtension(inputData),
+    new CameraDistanceExtension(inputData)
   ];
 
   for (let i = 0; i < extensions.length; ++i) {
     extensions[i].initialize();
   }
 
-  for(let i = 0; i < sceneExtensions.length; ++i) {
+  for (let i = 0; i < sceneExtensions.length; ++i) {
     sceneExtensions[i].initialize(activeScene);
   }
 };
@@ -61,7 +60,6 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   camera = new ArcRotateCamera("camera", -0.95, 1.6, 93, new Vector3(0, 1, 0), scene);
   // Disable panning (RMB movement)
   camera.panningSensibility = 0;
-  defaultFov = camera.fov;
 
   activeScene = scene;
 
@@ -100,8 +98,8 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 };
 
 const onBeforeCameraRender = () => {
-  if(activeAudioData?.analyser) {
-    for(let i = 0; i < sceneExtensions.length; ++i) {
+  if (activeAudioData?.analyser) {
+    for (let i = 0; i < sceneExtensions.length; ++i) {
       sceneExtensions[i].onBeforeSceneRender(activeScene, boxes, audioInput);
     }
   }
@@ -112,7 +110,7 @@ const updateAudioData = () => {
     return;
 
   // optimization, only run update audio once per frame
-  if(activeFrame === lastUpdateFrame)
+  if (activeFrame === lastUpdateFrame)
     return;
 
   lastUpdateFrame = activeFrame;
@@ -154,10 +152,22 @@ const onSceneDisposed = () => {
 export const CreateBackground = (type: string, data: any) => {
   switch (type) {
     default:
-    case "solid": return CreateSolidBackground(data["bgColor"]);
-    case "gradient": return CreateGradientBackground(data["bgColors"])
+    case "solid":
+      return CreateSolidBackground(data["bgColor"]);
+    case "gradient":
+      return CreateGradientBackground(data["bgColors"], data["direction"]);
   }
-}
+};
+
+export const TryCreateAnimation = (data: any) => {
+  if (!data["animated"])
+    return "none";
+
+  const animType = data["animationType"] || "hue-rotate";
+  const speed = data["animationSpeed"] || 0;
+
+  return CreateAnimation(animType, speed);
+};
 
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
@@ -185,10 +195,12 @@ export const AudioVisualizer = () => {
   const bgData = data[Modifiers.BACKGROUND];
   const vignette = CreateVignette(bgData["vignetteRadius"], bgData["vignetteColor"]);
   const background = CreateBackground(bgData["type"], bgData);
+  const animation = TryCreateAnimation(bgData);
 
   return (
     <VisualsContainer background={background}
-                      boxShadow={vignette}>
+                      boxShadow={vignette}
+                      animation={animation}>
       <BabylonScene antialias
                     onSceneReady={e => onSceneReady(e, data)}
                     onRender={onRender}

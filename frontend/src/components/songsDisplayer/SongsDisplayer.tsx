@@ -63,7 +63,7 @@ export const SongsDisplayer = () => {
                  spacing={0.5}
                  divider={<Divider orientation="horizontal" flexItem />}
                  margin="0.35em auto 0.5em auto">
-            {availableSongs?.map(x => <SongButton songName={x} songUrl={x} onClick={onPlayAudioClicked} />)}
+            {availableSongs?.map(x => <SongButton key={x} songName={x} songUrl={x} onClick={onPlayAudioClicked} />)}
           </Stack>
         </AudioContainer>
 

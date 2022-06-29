@@ -2,6 +2,11 @@ import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAcco
 import { MultiColorPicker } from "../../genericProperties/multiColorPicker/MultiColorPicker";
 import { useModifiersContext } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
+import { InlineContainer, SwitchLabel } from "../../../../shared/SharedStyles";
+import { MenuItem, Switch } from "@mui/material";
+import React from "react";
+import { NumberInput } from "../../genericProperties/numberInput/NumberInput";
+import { DropdownProperty } from "../../genericProperties/dropdownProperty/DropdownProperty";
 
 export const GradientBackground = () => {
   const { data, setData } = useModifiersContext();
@@ -9,12 +14,65 @@ export const GradientBackground = () => {
 
   const onBackgroundGradientSet = (colors: string[]) => {
     bgData["bgColors"] = colors;
-    setData({...data, data});
+    setData({ ...data, data });
+  };
+
+  const onSetIsAnimated = (animated: boolean) => {
+    bgData["animated"] = animated;
+    setData({ ...data, data });
+  };
+
+  const onGradientDirectionSet = (degree: number) => {
+    bgData["direction"] = degree;
+    setData({ ...data, data });
+  };
+
+  const onAnimationSpeedChanged = (speed: number) => {
+    bgData["animationSpeed"] = speed;
+    setData({ ...data, data });
+  };
+
+  const onAnimationTypeChanged = (newType: any) => {
+    bgData["animationType"] = newType;
+    setData({ ...data, data });
   };
 
   return (
-    <FieldAccordeon title="Color">
-      <MultiColorPicker colors={bgData["bgColors"]} setColors={onBackgroundGradientSet}/>
-    </FieldAccordeon>
+    <>
+      <FieldAccordeon title="Color">
+        <MultiColorPicker colors={bgData["bgColors"]} setColors={onBackgroundGradientSet} />
+      </FieldAccordeon>
+      <FieldAccordeon title="Direction">
+        <NumberInput onSetValue={onGradientDirectionSet}
+                     label="Direction (0-360)"
+                     defaultValue={bgData["direction"]}
+                     minValue={0}
+                     maxValue={360} />
+      </FieldAccordeon>
+      <FieldAccordeon title="Is Animated">
+        <InlineContainer>
+          <SwitchLabel>Is Animated: </SwitchLabel>
+          <Switch checked={bgData["animated"] || false}
+                  onChange={e => onSetIsAnimated(e.target.checked)} />
+        </InlineContainer>
+        {
+          bgData["animated"] &&
+          <>
+            <DropdownProperty value={bgData["animationType"] || "hue-rotate"}
+                              setValue={onAnimationTypeChanged}
+                              folded title="Type">
+              <MenuItem value="hue-rotate">Hue Rotate</MenuItem>
+              <MenuItem value="infinite-scroll">Infinite scroll</MenuItem>
+            </DropdownProperty>
+            <NumberInput onSetValue={onAnimationSpeedChanged}
+                         label="Speed"
+                         defaultValue={bgData["animationSpeed"]}
+                         minValue={0}
+                         maxValue={1000} />
+          </>
+        }
+      </FieldAccordeon>
+
+    </>
   );
-}
+};
