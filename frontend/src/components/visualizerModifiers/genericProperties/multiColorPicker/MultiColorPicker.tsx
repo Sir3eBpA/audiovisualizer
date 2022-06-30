@@ -14,10 +14,11 @@ export const RenderColors = (colors: string[], onSetColor: (c: string, i: number
     <>
       {
         colors.map((x, index) => [
-            <ColorPicker color={x} label={`Color ${index}`} setColor={color => onSetColor(color, index)} />,
-            <Button onClick={() => onDeleteColor(index)}>Del</Button>
+            <ColorPicker key={index} color={x} label={`Color ${index}`} setColor={color => onSetColor(color, index)} />,
+            <Button key={`btn_${x}`} onClick={() => onDeleteColor(index)}>Del</Button>
           ]
-        )}
+        )
+      }
     </>
   );
 }

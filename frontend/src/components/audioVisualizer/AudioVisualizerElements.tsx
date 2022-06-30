@@ -14,11 +14,11 @@ export const VisualsContainer = styled.div<Background>`
   top: 0;
   // set z-index to be negative because DOM renders at 0 and higher
   z-index: -1;
-  background: ${props => props.background || "linear-gradient(90deg, #030101, #d71a1a, #000000)"};
+  background: #282c34;
   background-size: 400% 400%;
   background-blend-mode: screen;
-  animation: ${props => props.animation || "none"}; //hue-rotate 1.5s linear infinite;
-  box-shadow: ${props => props.boxShadow || "inset 0 0 150px black"};
+  animation: none; //hue-rotate 1.5s linear infinite;
+  box-shadow: inset 0 0 150px black;
 
   @keyframes hue-rotate {
     from {

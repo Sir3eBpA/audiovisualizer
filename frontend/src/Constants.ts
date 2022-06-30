@@ -9,6 +9,13 @@ export const Modifiers = {
 export const Defaults = {
   "bg": {
     "vignetteRadius": 100,
-    "vignetteColor": "black"
+    "vignetteColor": "black",
+    "bgSizeX": 100,
+    "bgSizeY": 100
   }
+}
+
+export const AnimationType = {
+  HUE_ROTATE: "hue-rotate",
+  INFINITE_SCROLL: "infinite-scroll"
 }

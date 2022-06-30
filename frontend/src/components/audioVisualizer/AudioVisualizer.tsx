@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 import {
   ArcRotateCamera,
   Color4,
@@ -21,7 +21,8 @@ import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeE
 import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
 import { Time } from "../../engine/Time";
 import { Modifiers } from "../../Constants";
-import { CreateAnimation, CreateGradientBackground, CreateSolidBackground, CreateVignette } from "../../utils/CssUtils";
+import { CreateVignette } from "../../utils/CssUtils";
+import { BuildCss, CreateBackground, TryCreateAnimation } from "./AudioVisualizerStylesBuilder";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -149,26 +150,6 @@ const onSceneDisposed = () => {
   console.log("unmounted audio visualizer!");
 };
 
-export const CreateBackground = (type: string, data: any) => {
-  switch (type) {
-    default:
-    case "solid":
-      return CreateSolidBackground(data["bgColor"]);
-    case "gradient":
-      return CreateGradientBackground(data["bgColors"], data["direction"]);
-  }
-};
-
-export const TryCreateAnimation = (data: any) => {
-  if (!data["animated"])
-    return "none";
-
-  const animType = data["animationType"] || "hue-rotate";
-  const speed = data["animationSpeed"] || 0;
-
-  return CreateAnimation(animType, speed);
-};
-
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
   const { data } = useModifiersContext();
@@ -193,14 +174,10 @@ export const AudioVisualizer = () => {
   useEffect(() => () => onSceneDisposed(), []);
 
   const bgData = data[Modifiers.BACKGROUND];
-  const vignette = CreateVignette(bgData["vignetteRadius"], bgData["vignetteColor"]);
-  const background = CreateBackground(bgData["type"], bgData);
-  const animation = TryCreateAnimation(bgData);
+  const css = BuildCss(bgData);
 
   return (
-    <VisualsContainer background={background}
-                      boxShadow={vignette}
-                      animation={animation}>
+    <VisualsContainer style={css}>
       <BabylonScene antialias
                     onSceneReady={e => onSceneReady(e, data)}
                     onRender={onRender}

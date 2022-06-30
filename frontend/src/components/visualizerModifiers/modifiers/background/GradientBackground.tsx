@@ -1,12 +1,14 @@
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 import { MultiColorPicker } from "../../genericProperties/multiColorPicker/MultiColorPicker";
 import { useModifiersContext } from "../../../../contexts/ModifiersContext";
-import { Modifiers } from "../../../../Constants";
+import { AnimationType, Modifiers } from "../../../../Constants";
 import { InlineContainer, SwitchLabel } from "../../../../shared/SharedStyles";
 import { MenuItem, Switch } from "@mui/material";
 import React from "react";
 import { NumberInput } from "../../genericProperties/numberInput/NumberInput";
 import { DropdownProperty } from "../../genericProperties/dropdownProperty/DropdownProperty";
+
+enum BackgroundSizeType { Width, Height }
 
 export const GradientBackground = () => {
   const { data, setData } = useModifiersContext();
@@ -37,6 +39,14 @@ export const GradientBackground = () => {
     setData({ ...data, data });
   };
 
+  const onBackgroundSizeChanged = (value: number, dir: BackgroundSizeType) => {
+    if (dir === BackgroundSizeType.Height)
+      bgData["bgSizeY"] = value;
+    else
+      bgData["bgSizeX"] = value;
+    setData({ ...data, data });
+  };
+
   return (
     <>
       <FieldAccordeon title="Color">
@@ -58,7 +68,7 @@ export const GradientBackground = () => {
         {
           bgData["animated"] &&
           <>
-            <DropdownProperty value={bgData["animationType"] || "hue-rotate"}
+            <DropdownProperty value={bgData["animationType"] || AnimationType.HUE_ROTATE}
                               setValue={onAnimationTypeChanged}
                               folded title="Type">
               <MenuItem value="hue-rotate">Hue Rotate</MenuItem>
@@ -69,6 +79,16 @@ export const GradientBackground = () => {
                          defaultValue={bgData["animationSpeed"]}
                          minValue={0}
                          maxValue={1000} />
+            <NumberInput onSetValue={val => onBackgroundSizeChanged(val, BackgroundSizeType.Width)}
+                         label="Background Size X"
+                         defaultValue={bgData["bgSizeX"]}
+                         minValue={100}
+                         maxValue={10000} />
+            <NumberInput onSetValue={val => onBackgroundSizeChanged(val, BackgroundSizeType.Height)}
+                         label="Background Size Y"
+                         defaultValue={bgData["bgSizeY"]}
+                         minValue={100}
+                         maxValue={10000} />
           </>
         }
       </FieldAccordeon>
