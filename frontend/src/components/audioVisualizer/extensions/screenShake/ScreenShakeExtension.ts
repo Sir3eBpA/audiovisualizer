@@ -1,11 +1,12 @@
-import { SceneExtension } from "../SceneExtension";
 import { Matrix, Mesh, Scalar, Scene, Vector4 } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
 import { calculateModeMultiplier, getInfluenceModeFromString, InfluenceMode } from "../common/InfluenceMode";
 import { Time } from "../../../../engine/Time";
+import { VisualizerExtension } from "../VisualizerExtension";
+import { IBeforeSceneRendererExtension } from "../../types/IBeforeSceneRendererExtension";
 
-export class ScreenShakeExtension extends SceneExtension {
+export class ScreenShakeExtension extends VisualizerExtension implements IBeforeSceneRendererExtension {
   private static _ProjectionMatrixCache: Matrix|undefined;
 
   private _r: Vector4 = new Vector4(0,0,0,0);

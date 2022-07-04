@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CSSProperties, useEffect } from "react";
+import { useEffect } from "react";
 import {
   ArcRotateCamera,
   Color4,
@@ -16,13 +16,14 @@ import { useModifiersContext } from "../../contexts/ModifiersContext";
 import { VisualizerExtension } from "./extensions/VisualizerExtension";
 import { ColorLerpExtension } from "./extensions/colorLerp/ColorLerpExtension";
 import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension";
-import { SceneExtension } from "./sceneExtensions/SceneExtension";
-import { ScreenShakeExtension } from "./sceneExtensions/screenShake/ScreenShakeExtension";
-import { CameraDistanceExtension } from "./sceneExtensions/cameraDistanceChanger/CameraDistanceExtension";
+import { ScreenShakeExtension } from "./extensions/screenShake/ScreenShakeExtension";
+import { CameraDistanceExtension } from "./extensions/cameraDistanceChanger/CameraDistanceExtension";
 import { Time } from "../../engine/Time";
 import { Modifiers } from "../../Constants";
-import { CreateVignette } from "../../utils/CssUtils";
-import { BuildCss, CreateBackground, TryCreateAnimation } from "./AudioVisualizerStylesBuilder";
+import { BuildCss } from "./AudioVisualizerStylesBuilder";
+import { IFrameRenderExtension } from "./types/IFrameRenderExtension";
+import { IBeforeSceneRendererExtension } from "./types/IBeforeSceneRendererExtension";
+import { IsBeforeSceneRenderer, IsFrameRender } from "./types/TypesChecker";
 
 let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
@@ -31,29 +32,28 @@ let boxesCount = 96;
 let camera: ArcRotateCamera;
 const audioInput = new AudioInput();
 let extensions: VisualizerExtension[];
-let sceneExtensions: SceneExtension[];
 let activeFrame: number = 0;
 let lastUpdateFrame: number = -1;
 let activeScene: Scene;
 
+let renderFrameExs: IFrameRenderExtension[];
+let beforeSceneRenderFrameExs: IBeforeSceneRendererExtension[];
+
 const updateExtensions = (inputData: any) => {
   extensions = [
     new ColorLerpExtension(inputData),
-    new BoxesScaleExtension(inputData)
-  ];
-
-  sceneExtensions = [
+    new BoxesScaleExtension(inputData),
     new ScreenShakeExtension(inputData),
     new CameraDistanceExtension(inputData)
   ];
 
   for (let i = 0; i < extensions.length; ++i) {
-    extensions[i].initialize();
+    extensions[i].initialize(activeScene);
   }
 
-  for (let i = 0; i < sceneExtensions.length; ++i) {
-    sceneExtensions[i].initialize(activeScene);
-  }
+  // build extensions based on their interface
+  renderFrameExs = extensions.filter( x => IsFrameRender(x) ) as unknown as IFrameRenderExtension[];
+  beforeSceneRenderFrameExs = extensions.filter( x => IsBeforeSceneRenderer(x) ) as unknown as IBeforeSceneRendererExtension[];
 };
 
 const onSceneReady = (scene: Scene, inputData: any) => {
@@ -100,8 +100,8 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
 const onBeforeCameraRender = () => {
   if (activeAudioData?.analyser) {
-    for (let i = 0; i < sceneExtensions.length; ++i) {
-      sceneExtensions[i].onBeforeSceneRender(activeScene, boxes, audioInput);
+    for (let i = 0; i < beforeSceneRenderFrameExs.length; ++i) {
+      beforeSceneRenderFrameExs[i].onBeforeSceneRender(activeScene, boxes, audioInput);
     }
   }
 };
@@ -139,8 +139,8 @@ const onRender = (scene: Scene) => {
 
     updateAudioData();
 
-    for (let i = 0; i < extensions.length; ++i) {
-      extensions[i].process(scene, boxes, audioInput);
+    for (let i = 0; i < renderFrameExs.length; ++i) {
+      renderFrameExs[i].onFrameRender(scene, boxes, audioInput);
     }
   }
   ++activeFrame;

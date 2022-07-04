@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { ColorPicker } from "../colorPicker/ColorPicker";
 import { Button } from "@mui/material";
+import { InlineContainer } from "../../../../shared/SharedStyles";
+import { DeleteButton } from "./MultiColorPickerElements";
 
 export type MultiColorSettings = {
   label?: string,
@@ -13,10 +15,11 @@ export const RenderColors = (colors: string[], onSetColor: (c: string, i: number
   return (
     <>
       {
-        colors.map((x, index) => [
-            <ColorPicker key={index} color={x} label={`Color ${index}`} setColor={color => onSetColor(color, index)} />,
-            <Button key={`btn_${x}`} onClick={() => onDeleteColor(index)}>Del</Button>
-          ]
+        colors.map((x, index) =>
+          <InlineContainer>
+            <ColorPicker key={index} color={x} label={`Color ${index}`} setColor={color => onSetColor(color, index)} />
+            <DeleteButton key={`btn_${x}`} onClick={() => onDeleteColor(index)}>Del</DeleteButton>
+          </InlineContainer>
         )
       }
     </>

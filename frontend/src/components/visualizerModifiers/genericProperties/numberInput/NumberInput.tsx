@@ -1,6 +1,5 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import { minmaxReduxPixelShader } from "@babylonjs/core/Shaders/minmaxRedux.fragment";
 
 export type NumberInputSettings = {
   defaultValue?: number,
@@ -34,7 +33,7 @@ export const NumberInput = (props: NumberInputSettings) => {
                size="small"
                variant="outlined"
                type="number"
-               defaultValue={value || 100}
-               onChange={e => props.onSetValue(parseFloat(e.target.value))} />
+               value={value || props.minValue}
+               onChange={e => onSetNumber(parseFloat(e.target.value))} />
   );
 }

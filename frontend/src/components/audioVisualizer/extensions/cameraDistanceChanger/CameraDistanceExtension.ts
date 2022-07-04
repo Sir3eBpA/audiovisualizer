@@ -1,11 +1,12 @@
-import { SceneExtension } from "../SceneExtension";
 import { ArcRotateCamera, Mesh, Scalar, Scene } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
 import { calculateModeMultiplier, getInfluenceModeFromString } from "../common/InfluenceMode";
 import { Time } from "../../../../engine/Time";
+import { VisualizerExtension } from "../VisualizerExtension";
+import { IBeforeSceneRendererExtension } from "../../types/IBeforeSceneRendererExtension";
 
-export class CameraDistanceExtension extends SceneExtension {
+export class CameraDistanceExtension extends VisualizerExtension implements IBeforeSceneRendererExtension {
   private static radius: number = 0;
 
   constructor(inputData: any) {

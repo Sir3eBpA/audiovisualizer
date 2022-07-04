@@ -7,6 +7,5 @@ export abstract class VisualizerExtension {
 
   constructor(inputData: any) {}
 
-  public abstract initialize(): void;
-  public abstract process(scene: Scene, visuals: Mesh[], audioData: AudioInput): void;
+  public abstract initialize(scene: Scene): void;
 }

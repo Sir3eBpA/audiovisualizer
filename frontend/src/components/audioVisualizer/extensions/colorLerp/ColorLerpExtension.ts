@@ -2,8 +2,9 @@ import { VisualizerExtension } from "../VisualizerExtension";
 import { AbstractMesh, Color3, Scene, StandardMaterial } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
+import { IFrameRenderExtension } from "../../types/IFrameRenderExtension";
 
-export class ColorLerpExtension extends VisualizerExtension {
+export class ColorLerpExtension extends VisualizerExtension implements IFrameRenderExtension {
   protected _startColor: Color3 = Color3.White();
   protected _endColor: Color3 = Color3.White();
 
@@ -21,7 +22,7 @@ export class ColorLerpExtension extends VisualizerExtension {
     }
   }
 
-  process(scene: Scene, visuals: AbstractMesh[], audioData: AudioInput): void {
+  onFrameRender(scene: Scene, visuals: AbstractMesh[], audioData: AudioInput): void {
     if(!this._inputData["active"]) return;
 
     for(let i = 0; i < visuals.length; ++i) {

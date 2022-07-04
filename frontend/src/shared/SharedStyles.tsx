@@ -9,6 +9,7 @@ export const InlineContainer = styled.div`
   display: flex;
   vertical-align: center;
   text-align: center;
+  width: 100%;
 `
 
 export const SwitchLabel = styled.p`

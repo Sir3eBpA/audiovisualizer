@@ -4,19 +4,19 @@ import { AudioInput } from "../../AudioInput";
 import { KeyValueStructure } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
 import { Time } from "../../../../engine/Time";
+import { IFrameRenderExtension } from "../../types/IFrameRenderExtension";
 
-export class BoxesScaleExtension extends VisualizerExtension {
+export class BoxesScaleExtension extends VisualizerExtension implements IFrameRenderExtension {
   protected _inputData: KeyValueStructure;
+
+  public initialize(scene: Scene): void {}
 
   constructor(inputData: any) {
     super(inputData);
     this._inputData = inputData[Modifiers.BOXES_SCALE];
   }
 
-  initialize(): void {
-  }
-
-  process(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
+  onFrameRender(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
     const minHeight = this._inputData["minHeight"] || 0.1;
     const maxHeight = this._inputData["maxHeight"] || 15.0;
     const alignHeight = this._inputData["alignHeight"] || false;
