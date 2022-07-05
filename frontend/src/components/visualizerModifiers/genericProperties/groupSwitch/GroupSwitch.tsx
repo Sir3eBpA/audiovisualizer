@@ -1,5 +1,6 @@
-import { Box, Paper, Switch, Typography } from "@mui/material";
+import { Box, Paper, Switch} from "@mui/material";
 import React, { ReactElement } from "react";
+import { Label, SwitchContainer } from "./GroupSwitchElements";
 
 export type GroupSwitchSettings = {
   text: string;
@@ -10,13 +11,15 @@ export type GroupSwitchSettings = {
 
 export const GroupSwitch = (props: GroupSwitchSettings) => {
   return (
-    <Paper elevation={0} sx={{ minWidth: "350px" }}>
-      <Switch
-        checked={props.active}
-        onChange={e => props.setActive(!props.active)}
-        inputProps={{ "aria-label": "controlled" }}
-      />
-      {props.text}
+    <Paper elevation={2} sx={{ minWidth: "350px" }}>
+      <SwitchContainer>
+        <Switch
+          checked={props.active}
+          onChange={e => props.setActive(!props.active)}
+          inputProps={{ "aria-label": "controlled" }}
+        />
+        <Label variant="button" color="primary">{props.text}</Label>
+      </SwitchContainer>
       {props.active &&
         <Box>
           {props.children}

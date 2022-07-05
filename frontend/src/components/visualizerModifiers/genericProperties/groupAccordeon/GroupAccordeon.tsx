@@ -10,7 +10,7 @@ export type GroupAccordeonSettings = {
 
 export const GroupAccordeon = (props: GroupAccordeonSettings) => {
   return (
-    <Paper elevation={0} sx={{ minWidth: "350px" }}>
+    <Paper elevation={2} sx={{ minWidth: "350px" }}>
       <Button variant="text"
               color="primary"
               onClick={e => props.setActive(!props.active)} fullWidth>
