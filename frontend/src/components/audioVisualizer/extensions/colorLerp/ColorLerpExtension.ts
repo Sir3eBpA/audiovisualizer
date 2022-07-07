@@ -3,6 +3,7 @@ import { AbstractMesh, Color3, Scene, StandardMaterial } from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { Modifiers } from "../../../../Constants";
 import { IFrameRenderExtension } from "../../types/IFrameRenderExtension";
+import { IVisualizer } from "../../visualizers/IVisualizer";
 
 export class ColorLerpExtension extends VisualizerExtension implements IFrameRenderExtension {
   protected _startColor: Color3 = Color3.White();
@@ -22,18 +23,20 @@ export class ColorLerpExtension extends VisualizerExtension implements IFrameRen
     }
   }
 
-  onFrameRender(scene: Scene, visuals: AbstractMesh[], audioData: AudioInput): void {
+  onFrameRender(scene: Scene, visuals: IVisualizer, audioData: AudioInput): void {
     if(!this._inputData["active"]) return;
 
-    for(let i = 0; i < visuals.length; ++i) {
-      const mat = visuals[i].material;
+    for(let i = 0; i < visuals.TotalVisuals; ++i) {
+      const mat = visuals.getMesh(i)?.material;
       if(!mat) continue;
 
-      const ndx = i * audioData.frequencyBinCount / visuals.length | 0;
+      const ndx = i * audioData.frequencyBinCount / visuals.TotalVisuals | 0;
       const audioValue = audioData.audioData[ndx] / 255.0;
 
-      const standardMaterial = mat as StandardMaterial;
-      Color3.LerpToRef(this._startColor, this._endColor, audioValue, standardMaterial.diffuseColor);
+      visuals.setMeshData(i, mesh => {
+        const standardMaterial = mat as StandardMaterial;
+        Color3.LerpToRef(this._startColor, this._endColor, audioValue, standardMaterial.diffuseColor);
+      });
     }
   }
 }

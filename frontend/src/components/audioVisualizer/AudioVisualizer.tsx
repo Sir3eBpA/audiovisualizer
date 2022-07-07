@@ -24,11 +24,12 @@ import { BuildCss } from "./AudioVisualizerStylesBuilder";
 import { IFrameRenderExtension } from "./types/IFrameRenderExtension";
 import { IBeforeSceneRendererExtension } from "./types/IBeforeSceneRendererExtension";
 import { IsBeforeSceneRenderer, IsFrameRender } from "./types/TypesChecker";
+import { IVisualizer } from "./visualizers/IVisualizer";
+import { SingleLine } from "./visualizers/SingleLine";
+import { MultiLine } from "./visualizers/MultiLine";
 
-let boxes: Mesh[] = [];
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
-let boxesCount = 96;
 let camera: ArcRotateCamera;
 const audioInput = new AudioInput();
 let extensions: VisualizerExtension[];
@@ -36,6 +37,7 @@ let activeFrame: number = 0;
 let lastUpdateFrame: number = -1;
 let activeScene: Scene;
 
+let visualizer: IVisualizer;
 let renderFrameExs: IFrameRenderExtension[];
 let beforeSceneRenderFrameExs: IBeforeSceneRendererExtension[];
 
@@ -79,21 +81,12 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   // Default intensity is 1. Let's dim the light a small amount
   light.intensity = 1;
 
-  boxes = [];
+  visualizer = new MultiLine();
+  visualizer.spawn(activeScene, { amount: 64, width: 5 });
 
-  for (let i = 0; i < boxesCount; ++i) {
-    // Our built-in 'box' shape.
-    const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
-    // Move the box upward 1/2 its height
-    box.position.y = 0;
-    box.position.x = i * 1.2;
-    box.material = new StandardMaterial("box" + i, scene);
-
-    boxes.push(box);
-  }
-
-  const centralCube = boxes[boxesCount / 2 - 1];
-  camera.setTarget(centralCube.position.clone());
+  const centralCube = visualizer.getMesh(visualizer.TotalVisuals / 2 - 1);
+  if (centralCube)
+    camera.setTarget(centralCube.position.clone());
 
   updateExtensions(inputData);
 };
@@ -101,13 +94,13 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 const onBeforeCameraRender = () => {
   if (activeAudioData?.analyser) {
     for (let i = 0; i < beforeSceneRenderFrameExs.length; ++i) {
-      beforeSceneRenderFrameExs[i].onBeforeSceneRender(activeScene, boxes, audioInput);
+      beforeSceneRenderFrameExs[i].onBeforeSceneRender(activeScene, visualizer, audioInput);
     }
   }
 };
 
 const updateAudioData = () => {
-  if (boxes.length === 0 || !activeAudioData?.analyser)
+  if (!visualizer || !activeAudioData?.analyser)
     return;
 
   // optimization, only run update audio once per frame
@@ -120,8 +113,8 @@ const updateAudioData = () => {
   activeAudioData.analyser.getByteFrequencyData(audioDataArray);
   let accumulatedAudio = 0;
 
-  for (let i = 0; i < boxes.length; ++i) {
-    const ndx = i * numPoints / boxes.length | 0;
+  for (let i = 0; i < visualizer.TotalVisuals; ++i) {
+    const ndx = i * numPoints / visualizer.TotalVisuals | 0;
     accumulatedAudio += audioDataArray[ndx] / 255.0;
   }
 
@@ -135,12 +128,12 @@ const onRender = (scene: Scene) => {
 
   Time.Dt = scene.getEngine().getDeltaTime() / 1000;
 
-  if (boxes.length > 0 && activeAudioData?.analyser) {
+  if (visualizer.TotalVisuals > 0 && activeAudioData?.analyser) {
 
     updateAudioData();
 
     for (let i = 0; i < renderFrameExs.length; ++i) {
-      renderFrameExs[i].onFrameRender(scene, boxes, audioInput);
+      renderFrameExs[i].onFrameRender(scene, visualizer, audioInput);
     }
   }
   ++activeFrame;

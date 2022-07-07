@@ -5,6 +5,7 @@ import { calculateModeMultiplier, getInfluenceModeFromString, InfluenceMode } fr
 import { Time } from "../../../../engine/Time";
 import { VisualizerExtension } from "../VisualizerExtension";
 import { IBeforeSceneRendererExtension } from "../../types/IBeforeSceneRendererExtension";
+import { IVisualizer } from "../../visualizers/IVisualizer";
 
 export class ScreenShakeExtension extends VisualizerExtension implements IBeforeSceneRendererExtension {
   private static _ProjectionMatrixCache: Matrix|undefined;
@@ -37,11 +38,11 @@ export class ScreenShakeExtension extends VisualizerExtension implements IBefore
     this._r = this._projectionMatrix.getRow(3) || Vector4.Zero();
   }
 
-  onBeforeSceneRender(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
+  onBeforeSceneRender(scene: Scene, visuals: IVisualizer, audioData: AudioInput): void {
     if (!this._inputData["active"]) return;
 
     const mode = getInfluenceModeFromString(this._inputData["mode"] || "single");
-    const modeMultiplier = calculateModeMultiplier(mode, visuals.length, audioData);
+    const modeMultiplier = calculateModeMultiplier(mode, visuals.TotalVisuals, audioData);
 
     const shakeSpeed = this._inputData["speed"] || 100;
 

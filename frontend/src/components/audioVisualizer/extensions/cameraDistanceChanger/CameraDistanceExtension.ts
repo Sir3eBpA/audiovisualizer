@@ -5,6 +5,7 @@ import { calculateModeMultiplier, getInfluenceModeFromString } from "../common/I
 import { Time } from "../../../../engine/Time";
 import { VisualizerExtension } from "../VisualizerExtension";
 import { IBeforeSceneRendererExtension } from "../../types/IBeforeSceneRendererExtension";
+import { IVisualizer } from "../../visualizers/IVisualizer";
 
 export class CameraDistanceExtension extends VisualizerExtension implements IBeforeSceneRendererExtension {
   private static radius: number = 0;
@@ -22,12 +23,12 @@ export class CameraDistanceExtension extends VisualizerExtension implements IBef
     }
   }
 
-  onBeforeSceneRender(scene: Scene, visuals: Mesh[], audioData: AudioInput): void {
+  onBeforeSceneRender(scene: Scene, visuals: IVisualizer, audioData: AudioInput): void {
     if (!this._inputData["active"]) return;
     if (!scene._activeCamera) return;
 
     const mode = getInfluenceModeFromString(this._inputData["mode"] || "single");
-    const modeMultiplier = calculateModeMultiplier(mode, visuals.length, audioData);
+    const modeMultiplier = calculateModeMultiplier(mode, visuals.TotalVisuals, audioData);
 
     const x = (this._inputData["min"] || 0) * modeMultiplier;
     const y = (this._inputData["max"] || 0) * modeMultiplier;
