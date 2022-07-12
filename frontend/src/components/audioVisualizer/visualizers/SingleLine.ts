@@ -1,11 +1,21 @@
 import { IVisualizer } from "./IVisualizer";
-import { AbstractMesh, MeshBuilder, Scene, StandardMaterial } from "@babylonjs/core";
+import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
 
 export class SingleLine implements IVisualizer {
   private _meshes: AbstractMesh[];
 
   constructor() {
     this._meshes = [];
+  }
+
+  getCenterPosition(): Vector3 {
+    if(this.TotalVisuals === 0)
+      return Vector3.Zero();
+
+    const centerMesh = this.getMesh(this.TotalVisuals / 2 - 1);
+    if (centerMesh)
+      return centerMesh.position;
+    return Vector3.Zero();
   }
 
   get TotalVisuals(): number {

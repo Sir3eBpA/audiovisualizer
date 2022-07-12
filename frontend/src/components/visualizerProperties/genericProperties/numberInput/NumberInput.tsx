@@ -7,24 +7,29 @@ export type NumberInputSettings = {
   label: string,
   maxValue?: number,
   minValue?: number,
+  integersOnly?: boolean
 }
 
 export const NumberInput = (props: NumberInputSettings) => {
   const [value, setValue] = useState(props.defaultValue || 0);
 
   const onSetNumber = (val: number) => {
-    if(props.minValue && val < props.minValue) {
+    let finalVal = val;
+    if(props.integersOnly)
+      finalVal = Math.round(finalVal);
+
+    if(props.minValue && finalVal < props.minValue) {
       setValue(props.minValue);
       return;
     }
 
-    if(props.maxValue && val > props.maxValue) {
+    if(props.maxValue && finalVal > props.maxValue) {
       setValue(props.maxValue);
       return;
     }
 
-    setValue(val);
-    props.onSetValue(val);
+    setValue(finalVal);
+    props.onSetValue(finalVal);
   }
 
   return (

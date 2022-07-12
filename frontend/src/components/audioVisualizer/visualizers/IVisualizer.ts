@@ -1,4 +1,4 @@
-import { AbstractMesh, Mesh, Scene } from "@babylonjs/core";
+import { AbstractMesh, Mesh, Scene, Vector3 } from "@babylonjs/core";
 
 export interface IVisualizer {
   get TotalVisuals(): number;
@@ -10,6 +10,8 @@ export interface IVisualizer {
   getMesh(visualIndex: number): AbstractMesh | null;
 
   getAllMeshes(): AbstractMesh[] | null;
+
+  getCenterPosition(): Vector3;
 
   setMeshData(visualIndex: number, setCallback: (mesh: AbstractMesh) => void): void;
 }

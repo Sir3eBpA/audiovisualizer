@@ -3,7 +3,19 @@ export const Modifiers = {
   SCREENSHAKE: "screenshake",
   BOXES_SCALE: "boxes_scale",
   CAM_DISTANCE: "fov",
-  BACKGROUND: "bg"
+  BACKGROUND: "bg",
+  VISUALIZER: "visualizer"
+}
+
+export const VisualizerType = {
+  SINGLE_LINE: "singleLine",
+  MULTI_LINE: "multiLine",
+  CIRCLE: "circle"
+}
+
+export const AnimationType = {
+  HUE_ROTATE: "hue-rotate",
+  INFINITE_SCROLL: "infinite-scroll"
 }
 
 export const Defaults = {
@@ -12,10 +24,8 @@ export const Defaults = {
     "vignetteColor": "black",
     "bgSizeX": 100,
     "bgSizeY": 100
+  },
+  "visuaizer": {
+    "mode": VisualizerType.SINGLE_LINE
   }
-}
-
-export const AnimationType = {
-  HUE_ROTATE: "hue-rotate",
-  INFINITE_SCROLL: "infinite-scroll"
 }

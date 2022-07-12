@@ -2,12 +2,13 @@ import React from "react";
 import { VisualizerTopBar } from "./TopBar/VisualizerTopBar";
 import { SongsDisplayer } from "../songsDisplayer/SongsDisplayer";
 import { useVisualizerContext } from "../../contexts/VisualizerContext";
-import { ScreenShake } from "../visualizerModifiers/modifiers/screenShake/ScreenShake";
-import { ColorLerp } from "../visualizerModifiers/modifiers/colorLerp/ColorLerp";
-import { BoxesScale } from "../visualizerModifiers/modifiers/boxesScale/BoxesScale";
-import { PropertiesDisplayer } from "../visualizerModifiers/PropertiesDisplayer";
-import { CameraDistanceChanger } from "../visualizerModifiers/modifiers/cameraDistanceChanger/CameraDistanceChanger";
-import { BackgroundChanger } from "../visualizerModifiers/modifiers/background/BackgroundChanger";
+import { ColorLerp } from "../visualizerProperties/modifiers/colorLerp/ColorLerp";
+import { BoxesScale } from "../visualizerProperties/modifiers/boxesScale/BoxesScale";
+import { PropertiesDisplayer } from "../visualizerProperties/PropertiesDisplayer";
+import { CameraDistanceChanger } from "../visualizerProperties/modifiers/cameraDistanceChanger/CameraDistanceChanger";
+import { BackgroundChanger } from "../visualizerProperties/modifiers/background/BackgroundChanger";
+import { ScreenShake } from "../visualizerProperties/modifiers/screenShake/ScreenShake";
+import { Visualizers } from "../visualizerProperties/modifiers/visualizer/Visualizers";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
@@ -25,6 +26,7 @@ export const VisualizerMenu = () => {
         <CameraDistanceChanger />
         <BoxesScale />
         <BackgroundChanger />
+        <Visualizers />
       </PropertiesDisplayer>
     </>
   );

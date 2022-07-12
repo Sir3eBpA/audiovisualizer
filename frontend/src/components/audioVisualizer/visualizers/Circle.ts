@@ -1,11 +1,15 @@
 import { IVisualizer } from "./IVisualizer";
-import { AbstractMesh, MeshBuilder, Scene, StandardMaterial } from "@babylonjs/core";
+import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
 
 export class Circle implements IVisualizer {
   private _meshes: AbstractMesh[];
 
   constructor() {
     this._meshes = [];
+  }
+
+  getCenterPosition(): Vector3 {
+    return Vector3.Zero();
   }
 
   get TotalVisuals(): number {

@@ -1,14 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import {
-  ArcRotateCamera,
-  Color4,
-  HemisphericLight,
-  Mesh,
-  MeshBuilder,
-  Scene, StandardMaterial,
-  Vector3
-} from "@babylonjs/core";
+import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
 import { AudioInput } from "./AudioInput";
@@ -25,6 +17,7 @@ import { IFrameRenderExtension } from "./types/IFrameRenderExtension";
 import { IBeforeSceneRendererExtension } from "./types/IBeforeSceneRendererExtension";
 import { IsBeforeSceneRenderer, IsFrameRender } from "./types/TypesChecker";
 import { IVisualizer } from "./visualizers/IVisualizer";
+import { Circle } from "./visualizers/Circle";
 import { SingleLine } from "./visualizers/SingleLine";
 import { MultiLine } from "./visualizers/MultiLine";
 
@@ -82,11 +75,8 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   light.intensity = 1;
 
   visualizer = new MultiLine();
-  visualizer.spawn(activeScene, { amount: 64, width: 5 });
-
-  const centralCube = visualizer.getMesh(visualizer.TotalVisuals / 2 - 1);
-  if (centralCube)
-    camera.setTarget(centralCube.position.clone());
+  visualizer.spawn(activeScene, { amount: 96, width: 3 });
+  camera.setTarget(visualizer.getCenterPosition().clone());
 
   updateExtensions(inputData);
 };

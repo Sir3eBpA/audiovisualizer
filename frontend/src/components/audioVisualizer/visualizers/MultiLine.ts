@@ -1,5 +1,5 @@
 import { IVisualizer } from "./IVisualizer";
-import { AbstractMesh, MeshBuilder, Scene, StandardMaterial } from "@babylonjs/core";
+import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
 
 export class MultiLine implements IVisualizer {
   private _mainMeshes: AbstractMesh[];
@@ -10,6 +10,16 @@ export class MultiLine implements IVisualizer {
     this._mainMeshes = [];
     this._additionalMeshes = [];
     this._width = 1;
+  }
+
+  getCenterPosition(): Vector3 {
+    if(this.TotalVisuals === 0)
+      return Vector3.Zero();
+
+    const centerMesh = this.getMesh(this.TotalVisuals / 2 - 1);
+    if (centerMesh)
+      return centerMesh.position;
+    return Vector3.Zero();
   }
 
   get TotalVisuals(): number {
