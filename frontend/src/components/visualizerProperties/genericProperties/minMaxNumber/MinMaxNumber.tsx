@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Container, Paper, TextField, Typography } from "@mui/material";
 import { MdExpandMore } from "react-icons/md";
+import { FieldAccordeon } from "../fieldAccordeon/FieldAccordeon";
 
 export type MinMaxNumberSettings = {
   title: string,
@@ -18,16 +19,7 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
   }, [minVal, maxVal]);
 
   return (
-    <Accordion disableGutters
-               defaultExpanded={true}>
-      <AccordionSummary
-        expandIcon={<MdExpandMore />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography>{props.title}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
+    <FieldAccordeon title={props.title}>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <TextField margin="dense"
                      label="Min"
@@ -45,7 +37,6 @@ export const MinMaxNumber = (props: MinMaxNumberSettings) => {
                      defaultValue={maxVal}
                      onChange={e => setMaxVal(parseFloat(e.target.value))} />
         </div>
-      </AccordionDetails>
-    </Accordion>
+      </FieldAccordeon>
   );
 };
