@@ -20,6 +20,8 @@ import { IVisualizer } from "./visualizers/IVisualizer";
 import { Circle } from "./visualizers/Circle";
 import { SingleLine } from "./visualizers/SingleLine";
 import { MultiLine } from "./visualizers/MultiLine";
+import Emitter from "../../utils/Emitter";
+import { EmitterEvents } from "../../utils/EmitterEvents";
 
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
@@ -51,11 +53,15 @@ const updateExtensions = (inputData: any) => {
   beforeSceneRenderFrameExs = extensions.filter( x => IsBeforeSceneRenderer(x) ) as unknown as IBeforeSceneRendererExtension[];
 };
 
+
+
 const onSceneReady = (scene: Scene, inputData: any) => {
   // This creates and positions a free camera (non-mesh)
-  camera = new ArcRotateCamera("camera", -0.95, 1.6, 93, new Vector3(0, 1, 0), scene);
+  camera = new ArcRotateCamera("camera", -0.95, 1.39, 95, new Vector3(0, 1, 0), scene);
+  camera.storeState();
+
   // Disable panning (RMB movement)
-  camera.panningSensibility = 0;
+  camera.panningSensibility = 250;
 
   activeScene = scene;
 
@@ -77,6 +83,11 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   visualizer = new MultiLine();
   visualizer.spawn(activeScene, { amount: 96, width: 3 });
   camera.setTarget(visualizer.getCenterPosition().clone());
+
+  Emitter.on(EmitterEvents.RESET_CAMERA, () => {
+    camera.restoreState();
+    camera.setTarget(visualizer.getCenterPosition().clone());
+  });
 
   updateExtensions(inputData);
 };
@@ -127,6 +138,8 @@ const onRender = (scene: Scene) => {
     }
   }
   ++activeFrame;
+
+  console.log("a: %s ; b: %s ; r: %s", camera.alpha, camera.beta, camera.radius);
 };
 
 const onSceneDisposed = () => {
