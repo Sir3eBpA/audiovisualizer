@@ -1,13 +1,13 @@
 import { CreateAnimation, CreateGradientBackground, CreateSolidBackground, CreateVignette } from "../../utils/CssUtils";
 import { CSSProperties } from "react";
-import { AnimationType } from "../../Constants";
+import { AnimationType, BackgroundType } from "../../Constants";
 
 export const CreateBackground = (type: string, data: any) => {
   switch (type) {
     default:
-    case "solid":
+    case BackgroundType.SOLID:
       return CreateSolidBackground(data["bgColor"]);
-    case "gradient":
+    case BackgroundType.GRADIENT:
       return CreateGradientBackground(data["bgColors"], data["direction"]);
   }
 };
@@ -34,7 +34,12 @@ export const BuildCss = (data: any) : CSSProperties => {
 
   cssProps["boxShadow"] = CreateVignette(data["vignetteRadius"], data["vignetteColor"]);
 
-  cssProps["backgroundImage"] = CreateBackground(data["type"], data);
+  const bgStyle: string = CreateBackground(data["type"], data);
+  if(data["type"] === BackgroundType.SOLID)
+    cssProps["backgroundColor"] = bgStyle;
+  else if(data["type"] === BackgroundType.GRADIENT)
+    cssProps["backgroundImage"] = bgStyle;
+
   cssProps["backgroundSize"] = BuildBackgroundSize(data);
 
   cssProps["animation"] = TryCreateAnimation(data);

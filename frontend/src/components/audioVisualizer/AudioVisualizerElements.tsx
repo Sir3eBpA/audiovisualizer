@@ -14,7 +14,7 @@ export const VisualsContainer = styled.div<Background>`
   top: 0;
   // set z-index to be negative because DOM renders at 0 and higher
   z-index: -1;
-  background: #282c34;
+  //background: #282c34;
   background-size: 400% 400%;
   background-blend-mode: screen;
   animation: none; //hue-rotate 1.5s linear infinite;

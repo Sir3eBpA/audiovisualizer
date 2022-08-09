@@ -3,7 +3,7 @@ import { useModifiersContext } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 
-export const SolidBackground = () => {
+export const SolidBackgroundEditor = () => {
   const { data, setData } = useModifiersContext();
   const bgData = data[Modifiers.BACKGROUND];
 

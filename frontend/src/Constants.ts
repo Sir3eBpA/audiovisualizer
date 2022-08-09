@@ -7,10 +7,17 @@ export const Modifiers = {
   VISUALIZER: "visualizer"
 }
 
+export const BackgroundType = {
+  SOLID: "solid",
+  GRADIENT: "gradient",
+  VIDEO: "video"
+}
+
 export const VisualizerType = {
   SINGLE_LINE: "singleLine",
   MULTI_LINE: "multiLine",
-  CIRCLE: "circle"
+  CIRCLE: "circle",
+  SPHERE: "sphere"
 }
 
 export const AnimationType = {
@@ -23,7 +30,9 @@ export const Defaults = {
     "vignetteRadius": 100,
     "vignetteColor": "black",
     "bgSizeX": 100,
-    "bgSizeY": 100
+    "bgSizeY": 100,
+    "type": BackgroundType.SOLID,
+    "bgColor": "#3E475A"
   },
   "visuaizer": {
     "mode": VisualizerType.SINGLE_LINE

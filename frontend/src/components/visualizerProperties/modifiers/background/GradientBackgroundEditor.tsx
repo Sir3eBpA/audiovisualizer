@@ -10,7 +10,7 @@ import { DropdownProperty } from "../../genericProperties/dropdownProperty/Dropd
 
 enum BackgroundSizeType { Width, Height }
 
-export const GradientBackground = () => {
+export const GradientBackgroundEditor = () => {
   const { data, setData } = useModifiersContext();
   const bgData = data[Modifiers.BACKGROUND];
 
