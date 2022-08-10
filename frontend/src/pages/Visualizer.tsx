@@ -7,10 +7,12 @@ import { AiFillSave, AiOutlineEye } from "react-icons/ai";
 import Emitter from "../utils/Emitter";
 import { EmitterEvents } from "../utils/EmitterEvents";
 import { BackgroundPlayer } from "../components/backgroundPlayer/BackgroundPlayer";
+import { SavePopup } from "../components/savePopup/SavePopup";
 
 export const Visualizer = () => {
   return (
     <>
+      <SavePopup/>
       <VisualizerMenu />
       <AudioVisualizer />
       <BottomRightContainer>
