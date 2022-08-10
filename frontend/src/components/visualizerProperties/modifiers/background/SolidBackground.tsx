@@ -9,7 +9,7 @@ export const SolidBackgroundEditor = () => {
 
   const onBackgroundColorSet = (color: string) => {
     bgData["bgColor"] = color;
-    setData({...data, data});
+    setData({...data});
   };
 
   return (

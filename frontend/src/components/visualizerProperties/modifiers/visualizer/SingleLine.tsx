@@ -10,12 +10,12 @@ export const SingleLine = () => {
 
   const onBoxesAmountChanged = (value: any) => {
     visualizerData["amount"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onBoxesSizeChanged = (value: any) => {
     visualizerData["size"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   return (

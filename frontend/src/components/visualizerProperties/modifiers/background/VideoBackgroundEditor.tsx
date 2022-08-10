@@ -12,12 +12,12 @@ export const VideoBackgroundEditor = () => {
 
   const onBackgroundColorSet = (src: string) => {
     bgData["bgSrc"] = src;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onBackgrondOpacitySet = (opacity: number) => {
     bgData["bgOpacity"] = opacity;
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

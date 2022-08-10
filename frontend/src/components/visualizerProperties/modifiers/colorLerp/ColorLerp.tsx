@@ -14,17 +14,17 @@ export const ColorLerp = () => {
 
   const onColorChanged = (field: string, value: any) => {
     colorData[field] = value;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onGroupSetActive = (active: boolean) => {
     colorData["active"] = active;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onColorStepSet = (val: string) => {
     colorData["step"] = parseFloat(val);
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

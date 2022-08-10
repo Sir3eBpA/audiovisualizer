@@ -14,23 +14,23 @@ export const BoxesScale = () => {
 
   const onGroupSetActive = (active: boolean) => {
     scaleData["active"] = active;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onHeightChanged = (min: number, max: number) => {
     scaleData["minHeight"] = min;
     scaleData["maxHeight"] = max;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onSetAlignHeight = (val: boolean) => {
     scaleData["alignHeight"] = val;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onScaleSpeedChanged = (val: number) => {
     scaleData["scaleSpeed"] = val;
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

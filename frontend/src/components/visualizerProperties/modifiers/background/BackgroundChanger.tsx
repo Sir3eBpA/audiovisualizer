@@ -27,22 +27,22 @@ export const BackgroundChanger = () => {
 
   const onGroupSetActive = (active: boolean) => {
     bgData["active"] = active;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onVignetteRadiusSet = (val: number) => {
     bgData["vignetteRadius"] = val;
-    setData({ ...data, data });
+    setData({ ...data });
   }
 
   const onVignetteColorSet = (color: string) => {
     bgData["vignetteColor"] = color;
-    setData({ ...data, data });
+    setData({ ...data });
   }
 
   const onTypeChanged = (type: any) => {
     bgData["type"] = type;
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

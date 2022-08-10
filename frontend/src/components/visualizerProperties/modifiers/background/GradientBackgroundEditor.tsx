@@ -16,27 +16,27 @@ export const GradientBackgroundEditor = () => {
 
   const onBackgroundGradientSet = (colors: string[]) => {
     bgData["bgColors"] = colors;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onSetIsAnimated = (animated: boolean) => {
     bgData["animated"] = animated;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onGradientDirectionSet = (degree: number) => {
     bgData["direction"] = degree;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onAnimationSpeedChanged = (speed: number) => {
     bgData["animationSpeed"] = speed;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onAnimationTypeChanged = (newType: any) => {
     bgData["animationType"] = newType;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onBackgroundSizeChanged = (value: number, dir: BackgroundSizeType) => {
@@ -44,7 +44,7 @@ export const GradientBackgroundEditor = () => {
       bgData["bgSizeY"] = value;
     else
       bgData["bgSizeX"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   return (

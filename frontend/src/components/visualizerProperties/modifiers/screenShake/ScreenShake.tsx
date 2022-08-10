@@ -17,22 +17,22 @@ export const ScreenShake = () => {
   const onMinMaxChanged = (min: number, max: number) => {
     shakeData["min"] = min;
     shakeData["max"] = max;
-    setData({...data, data});
+    setData({...data});
   };
 
   const onGroupSetActive = (active: boolean) => {
     shakeData["active"] = active;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onModeChanged = (value: any) => {
     shakeData["mode"] = value;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onShakeSpeedChanged = (value: number) => {
     shakeData["speed"] = value;
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

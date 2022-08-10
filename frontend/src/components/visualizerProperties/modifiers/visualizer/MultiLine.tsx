@@ -10,17 +10,17 @@ export const MultiLine = () => {
 
   const onBoxesAmountChanged = (value: any) => {
     visualizerData["amount"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onBoxesSizeChanged = (value: number) => {
     visualizerData["size"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onWidthChanged = (value: number) => {
     visualizerData["width"] = Math.round(value);
-    setData({...data, data});
+    setData({...data});
   }
 
   return (

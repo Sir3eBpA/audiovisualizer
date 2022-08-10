@@ -10,17 +10,17 @@ export const Circle = () => {
 
   const onBoxesAmountChanged = (value: any) => {
     visualizerData["amount"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onBoxesSizeChanged = (value: any) => {
     visualizerData["size"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onRadiusChanged = (value: any) => {
     visualizerData["radius"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   return (

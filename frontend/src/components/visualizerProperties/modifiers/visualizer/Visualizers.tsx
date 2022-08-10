@@ -23,12 +23,12 @@ export const Visualizers = () => {
 
   const onGroupSetActive = (active: boolean) => {
     visualizerData["active"] = active;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   const onModeChanged = (value: any) => {
     visualizerData["mode"] = value;
-    setData({ ...data, data });
+    setData({ ...data });
   };
 
   return (

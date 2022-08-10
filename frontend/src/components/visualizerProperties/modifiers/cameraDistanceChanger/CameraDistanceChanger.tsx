@@ -13,23 +13,23 @@ export const CameraDistanceChanger = () => {
 
   const onGroupSetActive = (active: boolean) => {
     camDistanceData["active"] = active;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onDistanceMinMaxChanged = (min: number, max: number) => {
     camDistanceData["min"] = min;
     camDistanceData["max"] = max;
-    setData({...data, data });
+    setData({...data });
   }
 
   const onCamDistanceModeChanged = (mode: any) => {
     camDistanceData["mode"] = mode;
-    setData({...data, data});
+    setData({...data});
   }
 
   const onSpeedChanged = (speed: number) => {
     camDistanceData["speed"] = speed;
-    setData({...data, data});
+    setData({...data});
   }
 
   return (
