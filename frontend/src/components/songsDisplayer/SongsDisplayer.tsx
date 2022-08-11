@@ -6,6 +6,7 @@ import { useAudioContext } from "../../contexts/AudioContext";
 import { Divider, Drawer, Stack, Typography } from "@mui/material";
 import { SongButton } from "./SongButton";
 import { useVisualizerContext } from "../../contexts/VisualizerContext";
+import { SongUploadButton } from "./SongUploadButton";
 
 export const SongsDisplayer = () => {
   const [availableSongs, setAvailableSongs] = useState<string[]>();
@@ -64,6 +65,7 @@ export const SongsDisplayer = () => {
                  divider={<Divider orientation="horizontal" flexItem />}
                  margin="0.35em auto 0.5em auto">
             {availableSongs?.map(x => <SongButton key={x} songName={x} songUrl={x} onClick={onPlayAudioClicked} />)}
+            <SongUploadButton onClick={onPlayAudioClicked} />
           </Stack>
         </AudioContainer>
 
