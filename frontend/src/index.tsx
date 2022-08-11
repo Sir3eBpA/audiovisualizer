@@ -4,10 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AppContexts } from "./AppContexts";
+import axios from "axios";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+axios.defaults.baseURL = "http://localhost:3001";
 
 root.render(
   <React.StrictMode>

@@ -5,14 +5,22 @@ import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAcco
 import { Input } from "@mui/material";
 import { TextInput } from "../../genericProperties/textInput/TextInput";
 import { NumberInput } from "../../genericProperties/numberInput/NumberInput";
+import { GetYoutubeVideoId } from "../../../../utils/StringUtils";
 
 export const VideoBackgroundEditor = () => {
   const { data, setData } = useModifiersContext();
   const bgData = data[Modifiers.BACKGROUND];
 
   const onBackgroundColorSet = (src: string) => {
-    bgData["bgSrc"] = src;
-    setData({ ...data });
+    const videoId = GetYoutubeVideoId(src);
+    if(videoId) {
+      bgData["bgOriginalSrc"] = src;
+
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&vq=hd1080`;
+      bgData["bgSrc"] = embedUrl;
+
+      setData({ ...data });
+    }
   };
 
   const onBackgrondOpacitySet = (opacity: number) => {
@@ -24,7 +32,7 @@ export const VideoBackgroundEditor = () => {
     <FieldAccordeon title="Youtube URL">
       <TextInput onSetValue={onBackgroundColorSet}
                  label="Youtube URL"
-                 defaultValue={bgData["bgSrc"]} />
+                 defaultValue={bgData["bgOriginalSrc"]} />
       <NumberInput onSetValue={onBackgrondOpacitySet}
                    label="Opacity"
                    defaultValue={20}

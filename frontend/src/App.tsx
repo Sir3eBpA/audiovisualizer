@@ -16,7 +16,8 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
         <Routes>
-          <Route path="visualizer" element={<Visualizer />} />
+          <Route path="/visualizer" element={<Visualizer />} />
+          <Route path="/visualizer/:id" element={<Visualizer />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

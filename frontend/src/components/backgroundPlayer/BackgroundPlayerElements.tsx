@@ -7,7 +7,7 @@ export interface FullscreenIFrameSettings {
 
 export const FullscreenIframe = styled.iframe<FullscreenIFrameSettings>`
   width: 100%;
-  height: calc((100vw*9) /16);;
+  height: calc((100vw * 9) / 16);
   margin: auto;
   opacity: ${props => `${props.opacity}%` || "15%"};
   pointer-events: none;
