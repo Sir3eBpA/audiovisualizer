@@ -1,5 +1,6 @@
 import { IVisualizer } from "./IVisualizer";
 import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
+import { VisualizerType } from "../../../Constants";
 
 export class Circle implements IVisualizer {
   private _meshes: AbstractMesh[];
@@ -16,10 +17,13 @@ export class Circle implements IVisualizer {
     return this.getAllMeshes()?.length || 0;
   }
 
+  get Name(): string { return VisualizerType.CIRCLE; }
+
   despawn(scene: Scene): void {
     for(let i = 0; i < this._meshes.length; ++i) {
-
+      scene.removeMesh(this._meshes[i]);
     }
+    this._meshes.length = 0;
   }
 
   spawn(scene: Scene, data?: any): void {
@@ -57,4 +61,8 @@ export class Circle implements IVisualizer {
       setDataCallback(mesh);
     }
   }
+
+  get CanBeAligned(): boolean { return true; }
+
+  get Up(): Vector3 { return Vector3.UpReadOnly; }
 }

@@ -1,8 +1,15 @@
 import { IVisualizer } from "./IVisualizer";
-import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
+import {
+  AbstractMesh,
+  MeshBuilder,
+  Scene,
+  StandardMaterial,
+  Vector3
+} from "@babylonjs/core";
+import { FibonacciSphere } from "../../../utils/MathUtils";
 import { VisualizerType } from "../../../Constants";
 
-export class SingleLine implements IVisualizer {
+export class Sphere implements IVisualizer {
   private _meshes: AbstractMesh[];
 
   constructor() {
@@ -10,20 +17,16 @@ export class SingleLine implements IVisualizer {
   }
 
   getCenterPosition(): Vector3 {
-    if(this.TotalVisuals === 0)
-      return Vector3.Zero();
-
-    const centerMesh = this.getMesh(this.TotalVisuals / 2 - 1);
-    if (centerMesh)
-      return centerMesh.position;
     return Vector3.Zero();
   }
-
-  get Name(): string { return VisualizerType.SINGLE_LINE; }
 
   get TotalVisuals(): number {
     return this.getAllMeshes()?.length || 0;
   }
+
+  get Up(): Vector3 { return Vector3.RightHandedForwardReadOnly; }
+
+  get Name(): string { return VisualizerType.SPHERE; }
 
   despawn(scene: Scene): void {
     for(let i = 0; i < this._meshes.length; ++i) {
@@ -34,15 +37,24 @@ export class SingleLine implements IVisualizer {
 
   spawn(scene: Scene, data?: any): void {
     const amount = data["amount"] || 0;
+    const radius = data["radius"] || 5;
 
+    const tempVec3 = new Vector3();
     for (let i = 0; i < amount; ++i) {
       // Our built-in 'box' shape.
       const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
-      // Move the box upward 1/2 its height
-      box.position.y = 0;
-      box.position.x = i * (data["size"] * 1.2);
-      box.scaling.x = data["size"];
-      box.scaling.z = data["size"];
+
+      FibonacciSphere(i, amount, tempVec3);
+      box.lookAt(tempVec3);
+
+      tempVec3.scaleAndAddToRef(radius, tempVec3);
+      box.position.copyFrom(tempVec3);
+
+
+      // look at from box position to zero, then invert
+      //const lookAt = Matrix.LookAtLH(box.position, Vector3.ZeroReadOnly, Vector3.LeftReadOnly).invert();
+      //box.rotationQuaternion = Quaternion.FromRotationMatrix(lookAt);
+
       box.material = new StandardMaterial("box" + i, scene);
 
       this._meshes.push(box);
@@ -66,8 +78,5 @@ export class SingleLine implements IVisualizer {
     }
   }
 
-  get CanBeAligned(): boolean {return true;}
-
-  get Up(): Vector3 { return Vector3.UpReadOnly; }
-
+  get CanBeAligned(): boolean {return false;}
 }

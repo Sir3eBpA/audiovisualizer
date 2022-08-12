@@ -11,17 +11,18 @@ import { BoxesScaleExtension } from "./extensions/boxesScale/BoxesScaleExtension
 import { ScreenShakeExtension } from "./extensions/screenShake/ScreenShakeExtension";
 import { CameraDistanceExtension } from "./extensions/cameraDistanceChanger/CameraDistanceExtension";
 import { Time } from "../../engine/Time";
-import { Modifiers } from "../../Constants";
+import { Modifiers} from "../../Constants";
 import { BuildCss } from "./AudioVisualizerStylesBuilder";
 import { IFrameRenderExtension } from "./types/IFrameRenderExtension";
 import { IBeforeSceneRendererExtension } from "./types/IBeforeSceneRendererExtension";
 import { IsBeforeSceneRenderer, IsFrameRender } from "./types/TypesChecker";
 import { IVisualizer } from "./visualizers/IVisualizer";
-import { Circle } from "./visualizers/Circle";
-import { SingleLine } from "./visualizers/SingleLine";
-import { MultiLine } from "./visualizers/MultiLine";
 import Emitter from "../../utils/Emitter";
 import { EmitterEvents } from "../../utils/EmitterEvents";
+import { Sphere } from "./visualizers/Sphere";
+import 'babylonjs-inspector';
+import { CreateVisualizer } from "./visualizers/VisualizersFactory";
+import _ from "lodash";
 
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
@@ -31,6 +32,7 @@ let extensions: VisualizerExtension[];
 let activeFrame: number = 0;
 let lastUpdateFrame: number = -1;
 let activeScene: Scene;
+let lastVisualizerData: Object;
 
 let visualizer: IVisualizer;
 let renderFrameExs: IFrameRenderExtension[];
@@ -53,7 +55,24 @@ const updateExtensions = (inputData: any) => {
   beforeSceneRenderFrameExs = extensions.filter( x => IsBeforeSceneRenderer(x) ) as unknown as IBeforeSceneRendererExtension[];
 };
 
+const updateVisualizer = (visualizerData: any) => {
+  visualizer.despawn(activeScene);
 
+  const visualizerType = visualizerData["mode"];
+  // if we want to spawn a new type of visualizer
+  if(visualizer.Name !== visualizerType) {
+
+    const newVisualizer = CreateVisualizer(visualizerType);
+    if(newVisualizer) {
+      visualizer = newVisualizer;
+    }
+    else {
+      console.error("Cannot find visualizer of type: " + visualizerType);
+    }
+  }
+
+  visualizer.spawn(activeScene, visualizerData);
+}
 
 const onSceneReady = (scene: Scene, inputData: any) => {
   // This creates and positions a free camera (non-mesh)
@@ -80,8 +99,7 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   // Default intensity is 1. Let's dim the light a small amount
   light.intensity = 1;
 
-  visualizer = new MultiLine();
-  visualizer.spawn(activeScene, { amount: 96, width: 3 });
+  visualizer = new Sphere();
   camera.setTarget(visualizer.getCenterPosition().clone());
 
   Emitter.on(EmitterEvents.RESET_CAMERA, () => {
@@ -90,6 +108,9 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   });
 
   updateExtensions(inputData);
+
+  // scene.debugLayer.show({ embedMode: true, });
+
 };
 
 const onBeforeCameraRender = () => {
@@ -138,8 +159,6 @@ const onRender = (scene: Scene) => {
     }
   }
   ++activeFrame;
-
-  console.log("a: %s ; b: %s ; r: %s", camera.alpha, camera.beta, camera.radius);
 };
 
 const onSceneDisposed = () => {
@@ -150,6 +169,8 @@ export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
   const { data } = useModifiersContext();
   activeAudioData = audioData || undefined;
+
+  const visualizerData = data[Modifiers.VISUALIZER];
 
   useEffect(() => {
     if (audioData?.activeAudio && audioData?.analyser) {
@@ -163,6 +184,11 @@ export const AudioVisualizer = () => {
   }, [audioData]);
 
   useEffect(() => {
+    if(!lastVisualizerData || !_.isEqual(lastVisualizerData, visualizerData)) {
+      updateVisualizer(visualizerData);
+      lastVisualizerData = {...visualizerData};
+    }
+
     updateExtensions(data);
   }, [data]);
 

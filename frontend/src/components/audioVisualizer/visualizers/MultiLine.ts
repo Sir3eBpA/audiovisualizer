@@ -1,5 +1,6 @@
 import { IVisualizer } from "./IVisualizer";
 import { AbstractMesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
+import { VisualizerType } from "../../../Constants";
 
 export class MultiLine implements IVisualizer {
   private _mainMeshes: AbstractMesh[];
@@ -22,14 +23,22 @@ export class MultiLine implements IVisualizer {
     return Vector3.Zero();
   }
 
+  get Name(): string { return VisualizerType.MULTI_LINE; }
+
   get TotalVisuals(): number {
     return this.getAllMeshes()?.length || 0;
   }
 
   despawn(scene: Scene): void {
     for(let i = 0; i < this._mainMeshes.length; ++i) {
-
+      scene.removeMesh(this._mainMeshes[i]);
     }
+    this._mainMeshes.length = 0;
+
+    for(let i = 0; i < this._additionalMeshes.length; ++i) {
+      scene.removeMesh(this._additionalMeshes[i]);
+    }
+    this._additionalMeshes.length = 0;
   }
 
   spawn(scene: Scene, data?: any): void {
@@ -82,4 +91,9 @@ export class MultiLine implements IVisualizer {
         setDataCallback(mesh);
     }
   }
+
+  get CanBeAligned(): boolean {return true;}
+
+  get Up(): Vector3 { return Vector3.UpReadOnly; }
+
 }

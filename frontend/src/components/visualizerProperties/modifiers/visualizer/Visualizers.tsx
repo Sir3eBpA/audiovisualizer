@@ -7,12 +7,14 @@ import { SingleLine } from "./SingleLine";
 import { GroupAccordeon } from "../../genericProperties/groupAccordeon/GroupAccordeon";
 import { MultiLine } from "./MultiLine";
 import { Circle } from "./Circle";
+import { Sphere } from "./Sphere";
 
 export const GetVisualizer = (mode: string) => {
   switch (mode) {
     case VisualizerType.SINGLE_LINE: return <SingleLine/>
     case VisualizerType.MULTI_LINE: return <MultiLine/>
     case VisualizerType.CIRCLE: return <Circle/>
+    case VisualizerType.SPHERE: return <Sphere/>
     default: return <></>
   }
 };
@@ -41,6 +43,7 @@ export const Visualizers = () => {
         <MenuItem value={VisualizerType.SINGLE_LINE}>Single Line</MenuItem>
         <MenuItem value={VisualizerType.MULTI_LINE}>Multi Line</MenuItem>
         <MenuItem value={VisualizerType.CIRCLE}>Circle</MenuItem>
+        <MenuItem value={VisualizerType.SPHERE}>Sphere</MenuItem>
       </DropdownProperty>
       <>
         {GetVisualizer(visualizerData["mode"])}

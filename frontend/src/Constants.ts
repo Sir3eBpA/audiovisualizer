@@ -1,3 +1,5 @@
+import { SingleLine } from "./components/audioVisualizer/visualizers/SingleLine";
+
 export const Modifiers = {
   COLOR_LERP: "color_lerp",
   SCREENSHAKE: "screenshake",
@@ -34,7 +36,8 @@ export const Defaults = {
     "type": BackgroundType.SOLID,
     "bgColor": "#3E475A"
   },
-  "visuaizer": {
-    "mode": VisualizerType.SINGLE_LINE
+  "visualizer": {
+    "mode": VisualizerType.SINGLE_LINE,
+    "amount": 50
   }
 }

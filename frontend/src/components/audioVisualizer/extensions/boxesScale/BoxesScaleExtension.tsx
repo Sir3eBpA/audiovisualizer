@@ -31,12 +31,14 @@ export class BoxesScaleExtension extends VisualizerExtension implements IFrameRe
       visuals.setMeshData(i, mesh => {
         const targetHeight = Math.max((audioValue * maxHeight), minHeight);
         const height = Scalar.MoveTowards(mesh.scaling.y, targetHeight, scaleSpeed * Time.Dt);
-        mesh.scaling.set(1, height, 1);
+        mesh.scaling.y = height;
 
-        if (alignHeight) {
-          mesh.position.y = (height / 2.0);
-        } else {
-          mesh.position.y = 0;
+        if(visuals.CanBeAligned) {
+          if (alignHeight) {
+            mesh.position.y = (height / 2.0);
+          } else {
+            mesh.position.y = 0;
+          }
         }
       });
     }
