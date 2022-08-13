@@ -3,9 +3,9 @@ import { Quaternion, Vector3 } from "@babylonjs/core";
 const Deg2Rad = Math.PI * 2 / 360;
 const Rad2Deg = 1 / Deg2Rad;
 
-export const FromToRotation = (a: Vector3, b: Vector3) : Quaternion => {
+export const FromToRotation = (a: Vector3, b: Vector3, normal: Vector3 = Vector3.UpReadOnly) : Quaternion => {
   const axis = Vector3.Cross(a, b);
-  const angle = Vector3.GetAngleBetweenVectors(a, b, Vector3.UpReadOnly) * Rad2Deg;
+  const angle = Vector3.GetAngleBetweenVectors(a, b, normal) * Rad2Deg;
   return AngleAxis(angle, axis.normalize()).invertInPlace();
 }
 
