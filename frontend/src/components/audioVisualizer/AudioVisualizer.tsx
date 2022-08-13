@@ -109,7 +109,7 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   updateExtensions(inputData);
 
-  // scene.debugLayer.show({ embedMode: true, });
+  scene.debugLayer.show({ embedMode: true, });
 
 };
 

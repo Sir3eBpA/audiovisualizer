@@ -1,13 +1,8 @@
 import { IVisualizer } from "./IVisualizer";
-import {
-  AbstractMesh,
-  MeshBuilder,
-  Scene,
-  StandardMaterial,
-  Vector3
-} from "@babylonjs/core";
+import { AbstractMesh, MeshBuilder, Quaternion, Scene, Space, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { FibonacciSphere } from "../../../utils/MathUtils";
 import { VisualizerType } from "../../../Constants";
+import { FromToRotation} from "../../../utils/QuaternionUtils";
 
 export class Sphere implements IVisualizer {
   private _meshes: AbstractMesh[];
@@ -45,7 +40,8 @@ export class Sphere implements IVisualizer {
       const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
 
       FibonacciSphere(i, amount, tempVec3);
-      box.lookAt(tempVec3);
+
+      box.rotationQuaternion = FromToRotation(Vector3.UpReadOnly, tempVec3);
 
       tempVec3.scaleAndAddToRef(radius, tempVec3);
       box.position.copyFrom(tempVec3);
