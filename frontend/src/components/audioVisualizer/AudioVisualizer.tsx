@@ -19,10 +19,10 @@ import { IsBeforeSceneRenderer, IsFrameRender } from "./types/TypesChecker";
 import { IVisualizer } from "./visualizers/IVisualizer";
 import Emitter from "../../utils/Emitter";
 import { EmitterEvents } from "../../utils/EmitterEvents";
-import { Sphere } from "./visualizers/Sphere";
 import 'babylonjs-inspector';
 import { CreateVisualizer } from "./visualizers/VisualizersFactory";
 import _ from "lodash";
+import { SingleLine } from "./visualizers/SingleLine";
 
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
@@ -99,7 +99,9 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   // Default intensity is 1. Let's dim the light a small amount
   light.intensity = 1;
 
-  visualizer = new Sphere();
+  visualizer = new SingleLine();
+  visualizer.spawn(activeScene, { amount: 64 });
+
   camera.setTarget(visualizer.getCenterPosition().clone());
 
   Emitter.on(EmitterEvents.RESET_CAMERA, () => {
@@ -109,7 +111,7 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   updateExtensions(inputData);
 
-  scene.debugLayer.show({ embedMode: true, });
+  //scene.debugLayer.show({ embedMode: true, });
 
 };
 
