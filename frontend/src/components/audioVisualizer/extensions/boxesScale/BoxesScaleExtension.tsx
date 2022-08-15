@@ -1,5 +1,5 @@
 import { VisualizerExtension } from "../VisualizerExtension";
-import { Scalar, Scene} from "@babylonjs/core";
+import { Scalar, Scene, Vector3} from "@babylonjs/core";
 import { AudioInput } from "../../AudioInput";
 import { KeyValueStructure } from "../../../../contexts/ModifiersContext";
 import { Modifiers } from "../../../../Constants";
@@ -9,6 +9,8 @@ import { IVisualizer } from "../../visualizers/IVisualizer";
 
 export class BoxesScaleExtension extends VisualizerExtension implements IFrameRenderExtension {
   protected _inputData: KeyValueStructure;
+  protected _centerPivot: Vector3;
+  protected _bottomPivot: Vector3;
 
   public initialize(scene: Scene): void {
   }
@@ -16,6 +18,9 @@ export class BoxesScaleExtension extends VisualizerExtension implements IFrameRe
   constructor(inputData: any) {
     super(inputData);
     this._inputData = inputData[Modifiers.BOXES_SCALE];
+
+    this._centerPivot = Vector3.Zero();
+    this._bottomPivot = new Vector3(0, -0.5, 0);
   }
 
   onFrameRender(scene: Scene, visuals: IVisualizer, audioData: AudioInput): void {
@@ -33,13 +38,7 @@ export class BoxesScaleExtension extends VisualizerExtension implements IFrameRe
         const height = Scalar.MoveTowards(mesh.scaling.y, targetHeight, scaleSpeed * Time.Dt);
         mesh.scaling.y = height;
 
-        if(visuals.CanBeAligned) {
-          if (alignHeight) {
-            mesh.position.y = (height / 2.0);
-          } else {
-            mesh.position.y = 0;
-          }
-        }
+        mesh.setPivotPoint(alignHeight ? this._bottomPivot : this._centerPivot);
       });
     }
   }

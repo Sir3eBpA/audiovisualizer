@@ -1,5 +1,8 @@
 import { Vector3 } from "@babylonjs/core";
 
+export const Deg2Rad = Math.PI * 2 / 360;
+export const Rad2Deg = 1 / Deg2Rad;
+
 export const FibonacciSphere = (i: number, totalPoints: number, out: Vector3) => {
   const k = i + .5;
 

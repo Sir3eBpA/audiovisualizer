@@ -33,16 +33,18 @@ export class SingleLine implements IVisualizer {
   }
 
   spawn(scene: Scene, data?: any): void {
-    const amount = data["amount"] || 0;
+    const amount = data["amount"] || 64;
+    const size = data["size"] || 1;
+    const spacing = data["spacing"] || 1.2;
 
     for (let i = 0; i < amount; ++i) {
       // Our built-in 'box' shape.
       const box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
       // Move the box upward 1/2 its height
       box.position.y = 0;
-      box.position.x = i * (data["size"] * 1.2);
-      box.scaling.x = data["size"];
-      box.scaling.z = data["size"];
+      box.position.x = i * (size * spacing);
+      box.scaling.x = size;
+      box.scaling.z = size;
       box.material = new StandardMaterial("box" + i, scene);
 
       this._meshes.push(box);
@@ -65,8 +67,6 @@ export class SingleLine implements IVisualizer {
       setDataCallback(mesh);
     }
   }
-
-  get CanBeAligned(): boolean {return true;}
 
   get Up(): Vector3 { return Vector3.UpReadOnly; }
 

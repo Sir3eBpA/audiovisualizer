@@ -42,8 +42,10 @@ export class MultiLine implements IVisualizer {
   }
 
   spawn(scene: Scene, data?: any): void {
-    const amount = data["amount"] || 0;
+    const amount = data["amount"] || 64;
     const width = data["width"] || 1;
+    const size = data["size"] || 1;
+    const spacing = data["spacing"] || 1.2;
 
     this._width = width;
 
@@ -53,14 +55,16 @@ export class MultiLine implements IVisualizer {
         const box = MeshBuilder.CreateBox(`box_${i}_${j}`, { size: 1 }, scene);
         // Move the box upward 1/2 its height
         box.position.y = 0;
-        box.position.x = i * 1.2;
-        box.position.z = j * 1.2;
+        box.position.x = i * (size * spacing);
+        box.position.z = j * spacing;
+        box.scaling.x = size;
+        box.scaling.z = size;
         box.material = new StandardMaterial(`box_${i}_${j}`, scene);
 
         // if this is the first mesh then it's the main one
         if(j === 0)
           this._mainMeshes.push(box);
-        else // otherwise these are the copy meshes that follow the main one
+        else // otherwise, these are the copy meshes that follow the main one
           this._additionalMeshes.push(box);
       }
     }
@@ -91,8 +95,6 @@ export class MultiLine implements IVisualizer {
         setDataCallback(mesh);
     }
   }
-
-  get CanBeAligned(): boolean {return true;}
 
   get Up(): Vector3 { return Vector3.UpReadOnly; }
 

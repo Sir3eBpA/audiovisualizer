@@ -78,7 +78,7 @@ export const GradientBackgroundEditor = () => {
                          label="Speed"
                          defaultValue={bgData["animationSpeed"]}
                          minValue={0}
-                         maxValue={1000} />
+                         maxValue={10000} />
             <NumberInput onSetValue={val => onBackgroundSizeChanged(val, BackgroundSizeType.Width)}
                          label="Background Size X"
                          defaultValue={bgData["bgSizeX"]}

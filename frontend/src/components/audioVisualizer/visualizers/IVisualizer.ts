@@ -2,7 +2,6 @@ import { AbstractMesh, Scene, Vector3 } from "@babylonjs/core";
 
 export interface IVisualizer {
   get TotalVisuals(): number;
-  get CanBeAligned(): boolean;
   get Up(): Vector3;
   get Name(): string;
 

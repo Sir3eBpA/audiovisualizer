@@ -27,8 +27,9 @@ export class Circle implements IVisualizer {
   }
 
   spawn(scene: Scene, data?: any): void {
-    const amount = data["amount"] || 0;
+    const amount = data["amount"] || 64;
     const radius = data["radius"] || 1;
+    const size = data["size"] || 1;
 
     for (let i = 0; i < amount; ++i) {
       // Our built-in 'box' shape.
@@ -38,6 +39,8 @@ export class Circle implements IVisualizer {
       box.position.y = 0;
       box.position.x = Math.cos(angle) * radius;
       box.position.z = Math.sin(angle) * radius;
+      box.scaling.x = size;
+      box.scaling.z = size;
 
       box.material = new StandardMaterial("box" + i, scene);
 
@@ -61,8 +64,6 @@ export class Circle implements IVisualizer {
       setDataCallback(mesh);
     }
   }
-
-  get CanBeAligned(): boolean { return true; }
 
   get Up(): Vector3 { return Vector3.UpReadOnly; }
 }

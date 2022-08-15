@@ -1,6 +1,6 @@
 import { IVisualizer } from "./IVisualizer";
 import { AbstractMesh, MeshBuilder, Quaternion, Scene, Space, StandardMaterial, Vector3 } from "@babylonjs/core";
-import { FibonacciSphere } from "../../../utils/MathUtils";
+import { Deg2Rad, FibonacciSphere } from "../../../utils/MathUtils";
 import { VisualizerType } from "../../../Constants";
 import { FromToRotation} from "../../../utils/QuaternionUtils";
 
@@ -31,8 +31,9 @@ export class Sphere implements IVisualizer {
   }
 
   spawn(scene: Scene, data?: any): void {
-    const amount = data["amount"] || 0;
+    const amount = data["amount"] || 64;
     const radius = data["radius"] || 5;
+    const size = data["size"] || 1;
 
     const tempVec3 = new Vector3();
     for (let i = 0; i < amount; ++i) {
@@ -45,11 +46,12 @@ export class Sphere implements IVisualizer {
 
       tempVec3.scaleAndAddToRef(radius, tempVec3);
       box.position.copyFrom(tempVec3);
+      box.scaling.x = size;
+      box.scaling.z = size;
 
-
-      // look at from box position to zero, then invert
-      //const lookAt = Matrix.LookAtLH(box.position, Vector3.ZeroReadOnly, Vector3.LeftReadOnly).invert();
-      //box.rotationQuaternion = Quaternion.FromRotationMatrix(lookAt);
+      // rotate boxes by 110 degrees relative to 0,0,0 on X axis to make the sphere face upward
+      // probably worth exposing this value somewhere in future for extra tweaking
+      box.rotateAround(Vector3.ZeroReadOnly, Vector3.LeftReadOnly, 100 * Deg2Rad);
 
       box.material = new StandardMaterial("box" + i, scene);
 
@@ -73,6 +75,4 @@ export class Sphere implements IVisualizer {
       setDataCallback(mesh);
     }
   }
-
-  get CanBeAligned(): boolean {return false;}
 }

@@ -27,6 +27,9 @@ export const AnimationType = {
   INFINITE_SCROLL: "infinite-scroll"
 }
 
+export const MaxBoxesAmount: number = 5000;
+export const MaxBoxSize: number = 1000;
+
 export const Defaults = {
   "bg": {
     "vignetteRadius": 100,
@@ -38,6 +41,7 @@ export const Defaults = {
   },
   "visualizer": {
     "mode": VisualizerType.SINGLE_LINE,
-    "amount": 50
+    "amount": 64,
+    "spacing": 1.2
   }
 }

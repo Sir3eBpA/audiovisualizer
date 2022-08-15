@@ -1,7 +1,5 @@
 import { Quaternion, Vector3 } from "@babylonjs/core";
-
-const Deg2Rad = Math.PI * 2 / 360;
-const Rad2Deg = 1 / Deg2Rad;
+import { Deg2Rad, Rad2Deg } from "./MathUtils";
 
 export const FromToRotation = (a: Vector3, b: Vector3, normal: Vector3 = Vector3.UpReadOnly) : Quaternion => {
   const axis = Vector3.Cross(a, b);

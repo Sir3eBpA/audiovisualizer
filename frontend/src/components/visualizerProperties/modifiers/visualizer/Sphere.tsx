@@ -1,5 +1,5 @@
 import { useModifiersContext } from "../../../../contexts/ModifiersContext";
-import { Modifiers } from "../../../../Constants";
+import { MaxBoxesAmount, MaxBoxSize, Modifiers } from "../../../../Constants";
 import { FieldAccordeon } from "../../genericProperties/fieldAccordeon/FieldAccordeon";
 import { NumberInput } from "../../genericProperties/numberInput/NumberInput";
 import React from "react";
@@ -28,13 +28,13 @@ export const Sphere = () => {
       <NumberInput label="Amount"
                    onSetValue={onBoxesAmountChanged}
                    minValue={1}
-                   maxValue={256}
+                   maxValue={MaxBoxesAmount}
                    integersOnly
                    defaultValue={visualizerData["amount"] || 80} />
       <NumberInput label="Size"
                    onSetValue={onBoxesSizeChanged}
                    minValue={0.1}
-                   maxValue={10}
+                   maxValue={MaxBoxSize}
                    defaultValue={visualizerData["size"] || 1} />
       <NumberInput label="Radius"
                    onSetValue={onRadiusChanged}
