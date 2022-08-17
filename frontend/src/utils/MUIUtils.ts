@@ -8,14 +8,14 @@ export type BreakpointsColumns = {
 
 export const getColumnsAmount = (width: number, breakpoints: any, columns: BreakpointsColumns) => {
   if (width < breakpoints.sm) {
-    return 1
+    return columns.xs;
   } else if (width < breakpoints.md) {
-    return 2
+    return columns.sm;
   } else if (width < breakpoints.lg) {
-    return 3
+    return columns.md;
   } else if (width < breakpoints.xl) {
-    return 4
+    return columns.lg;
   } else {
-    return 5
+    return columns.xl;
   }
 }
