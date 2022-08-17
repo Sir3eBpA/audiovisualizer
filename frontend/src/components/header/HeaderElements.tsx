@@ -3,7 +3,7 @@ import { GiSoundWaves } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 60px;
   display: flex;
   background-color: black;
@@ -25,6 +25,7 @@ export const BackgroundFade = styled.div`
   height: 150px;
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+  z-index: 1;
 `
 
 export const Logo = styled(GiSoundWaves)`

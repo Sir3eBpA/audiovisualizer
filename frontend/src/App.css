@@ -1,12 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Bebas+Neue");
 
-.App {
-  text-align: center;
+body {
+  background-color: #2a2727;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App {
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
