@@ -14,17 +14,21 @@ export const LeftSideContent = styled.div`
 `
 
 export const MiddleSideContent = styled.div`
-  position: relative;
+  text-align: center;
   display: flex;
-  margin: 30px auto;
+  margin: auto;
   vertical-align: center;
   column-gap: 80px;
+  position: absolute;
+  top: 50px; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
 `
 
 export const BackgroundFade = styled.div`
   height: 150px;
   background: rgb(0,0,0);
-  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+  background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%);
   z-index: 1;
 `
 
@@ -37,7 +41,7 @@ export const Logo = styled(GiSoundWaves)`
 
 export const LinkElement = styled(Link)`
   font-family: "Bebas Neue";
-  font-size: 2.2em;
+  font-size: 3em;
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;

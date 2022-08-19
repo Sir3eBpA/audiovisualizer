@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Bebas+Neue");
+@import url("https://fonts.googleapis.com/css?family=Lato");
 
 body {
-  background-color: #2a2727;
+  background-color: #151414;
+  overflow-y: scroll;
 }
 
 .App {
