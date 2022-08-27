@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const audioRoute = require('./audio.route');
+const visulizerRoute = require('./visualizer.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -19,6 +20,10 @@ const defaultRoutes = [
   {
     path: '/audio',
     route: audioRoute,
+  },
+  {
+    path: '/visualizer',
+    route: visulizerRoute,
   },
 ];
 

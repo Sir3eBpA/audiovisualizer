@@ -1,9 +1,9 @@
 const express = require('express');
-const audioValidation = require('../../validations/audio.validation');
-const audioController = require('../../controllers/audio.controller');
+const validation = require('../../validations/audio.validation');
+const controller = require('../../controllers/audio.controller');
 
 const router = express.Router();
 
-router.get('/default', audioController.getDefaultAudio);
+router.get('/default', controller.getDefaultAudio);
 
 module.exports = router;

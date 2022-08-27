@@ -24,8 +24,21 @@ services:
     networks:
       - node-network
 
+  minio:
+    image: quay.io/minio/minio:latest
+    volumes:
+      - minio-data
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: password
+    command: server /data --console-address ":9001"
+
 volumes:
   dbdata:
+  minio-data:
 
 networks:
   node-network:
