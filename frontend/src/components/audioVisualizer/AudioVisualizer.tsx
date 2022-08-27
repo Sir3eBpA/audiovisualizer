@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from "@babylonjs/core";
+import { ArcRotateCamera, Camera, Color4, Engine, HemisphericLight, Scene, Vector3 } from "@babylonjs/core";
 import { BabylonScene, VisualsContainer } from "./AudioVisualizerElements";
 import { AudioData, useAudioContext } from "../../contexts/AudioContext";
 import { AudioInput } from "./AudioInput";
@@ -23,6 +23,11 @@ import 'babylonjs-inspector';
 import { CreateVisualizer } from "./visualizers/VisualizersFactory";
 import _ from "lodash";
 import { SingleLine } from "./visualizers/SingleLine";
+
+export class Visualizer {
+  static engine: Engine;
+  static camera: Camera;
+}
 
 let activeAudioData: AudioData | undefined;
 let audioDataArray: Uint8Array;
@@ -112,7 +117,8 @@ const onSceneReady = (scene: Scene, inputData: any) => {
   updateExtensions(inputData);
 
   //scene.debugLayer.show({ embedMode: true, });
-
+  Visualizer.engine = scene.getEngine();
+  Visualizer.camera = camera;
 };
 
 const onBeforeCameraRender = () => {
@@ -201,7 +207,7 @@ export const AudioVisualizer = () => {
   const css = BuildCss(bgData);
 
   return (
-    <VisualsContainer style={css}>
+    <VisualsContainer style={css} id="background">
       <BabylonScene antialias
                     onSceneReady={e => onSceneReady(e, data)}
                     onRender={onRender}

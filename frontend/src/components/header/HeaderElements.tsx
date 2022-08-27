@@ -26,7 +26,7 @@ export const MiddleSideContent = styled.div`
 `
 
 export const BackgroundFade = styled.div`
-  height: 150px;
+  height: 9rem;
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%);
   z-index: 1;

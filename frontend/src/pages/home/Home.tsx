@@ -90,7 +90,7 @@ export const Home = () => {
       </DoublePanel>
 
       <HomePresetsList cols={5} rows={2} />
-      {/*<Footer />*/}
+      <Footer />
     </>
   );
 };
