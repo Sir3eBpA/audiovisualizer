@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.post(
   '/create',
-  validate(visualizerValidation.createVisualizer),
   imageUploader.single('preview'),
+  validate(visualizerValidation.createVisualizer),
   controller.createVisualizer
 );
 

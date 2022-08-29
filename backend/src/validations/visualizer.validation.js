@@ -5,6 +5,7 @@ const createVisualizer = {
     name: Joi.string().required(),
     json: Joi.string().required(),
   }),
+  file: Joi.string().required(),
 };
 
 const getVisualizers = {
