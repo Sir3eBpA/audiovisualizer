@@ -8,11 +8,12 @@ import { TooltipText } from "../../../shared/SharedStyles";
 export type PropertiesBarSettings = {
   onSampleSongsClicked: () => void,
   onvisualizerModifiersClicked: () => void,
+  paddingRight?: number|string,
 }
 
 export const VisualizerTopBar = (props: PropertiesBarSettings) => {
   return (
-    <Container>
+    <Container style={{ paddingRight: props.paddingRight || 0 }}>
       <Tooltip title={<TooltipText>Sample songs (CC0 license)</TooltipText>} arrow placement="bottom">
         <MenuButton onClick={() => props.onSampleSongsClicked()} variant="contained">
           <MdAudiotrack size={35} />

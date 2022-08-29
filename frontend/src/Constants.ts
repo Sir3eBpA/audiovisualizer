@@ -1,4 +1,3 @@
-import { SingleLine } from "./components/audioVisualizer/visualizers/SingleLine";
 
 export const Modifiers = {
   COLOR_LERP: "color_lerp",

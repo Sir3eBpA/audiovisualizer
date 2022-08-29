@@ -11,7 +11,7 @@ export const BackgroundPlayer = () => {
 
   return (
     <>
-      <FullscreenIframe visible={isVisible} opacity={bgData["bgOpacity"]} src={bgData["bgSrc"]} allowFullScreen={true}/>
+      <FullscreenIframe id="video_background" visible={isVisible} opacity={bgData["bgOpacity"]} src={bgData["bgSrc"]} allowFullScreen={true}/>
     </>
   );
 }

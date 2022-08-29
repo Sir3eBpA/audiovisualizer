@@ -9,14 +9,25 @@ import { CameraDistanceChanger } from "../visualizerProperties/modifiers/cameraD
 import { BackgroundChanger } from "../visualizerProperties/modifiers/background/BackgroundChanger";
 import { ScreenShake } from "../visualizerProperties/modifiers/screenShake/ScreenShake";
 import { Visualizers } from "../visualizerProperties/modifiers/visualizer/Visualizers";
+import { usePageContext } from "../../contexts/PageContext";
 
 export const VisualizerMenu = () => {
   const { menus, setMenusVisibility } = useVisualizerContext();
+  const { pageData, setPageData } = usePageContext();
+
+  const songsClickedHandler = () => {
+    setMenusVisibility({ ...menus, songsVisible: !menus.songsVisible });
+  };
+
+  const modifiersClickedHandler = () => {
+    setMenusVisibility({ ...menus, settingsVisible: !menus.settingsVisible });
+  }
 
   return (
     <>
-      <VisualizerTopBar onSampleSongsClicked={() => setMenusVisibility({ ...menus, songsVisible: !menus.songsVisible })}
-                        onvisualizerModifiersClicked={() => setMenusVisibility({ ...menus, settingsVisible: !menus.settingsVisible })} />
+      <VisualizerTopBar onSampleSongsClicked={songsClickedHandler}
+                        onvisualizerModifiersClicked={modifiersClickedHandler}
+                        paddingRight={pageData.right} />
 
       <SongsDisplayer />
 

@@ -23,6 +23,7 @@ import 'babylonjs-inspector';
 import { CreateVisualizer } from "./visualizers/VisualizersFactory";
 import _ from "lodash";
 import { SingleLine } from "./visualizers/SingleLine";
+import { usePageContext } from "../../contexts/PageContext";
 
 export class Visualizer {
   static engine: Engine;
@@ -116,7 +117,6 @@ const onSceneReady = (scene: Scene, inputData: any) => {
 
   updateExtensions(inputData);
 
-  //scene.debugLayer.show({ embedMode: true, });
   Visualizer.engine = scene.getEngine();
   Visualizer.camera = camera;
 };
@@ -176,6 +176,7 @@ const onSceneDisposed = () => {
 export const AudioVisualizer = () => {
   const { audioData } = useAudioContext();
   const { data } = useModifiersContext();
+  const { pageData } = usePageContext();
   activeAudioData = audioData || undefined;
 
   const visualizerData = data[Modifiers.VISUALIZER];
@@ -200,6 +201,13 @@ export const AudioVisualizer = () => {
     updateExtensions(data);
   }, [data]);
 
+  useEffect(() => {
+    if(pageData.inspectorOn)
+      activeScene.debugLayer.show({ embedMode: true });
+    else
+      activeScene.debugLayer.hide();
+  }, [pageData]);
+
   // call to clean up the scene on component unmount
   useEffect(() => () => onSceneDisposed(), []);
 
@@ -209,6 +217,7 @@ export const AudioVisualizer = () => {
   return (
     <VisualsContainer style={css} id="background">
       <BabylonScene antialias
+                    engineOptions={{ preserveDrawingBuffer:true }}
                     onSceneReady={e => onSceneReady(e, data)}
                     onRender={onRender}
                     id="my-canvas" />

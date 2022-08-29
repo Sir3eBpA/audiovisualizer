@@ -1,77 +1,72 @@
 import { useModifiersContext } from "../../contexts/ModifiersContext";
 import Emitter from "../../utils/Emitter";
 import { EmitterEvents } from "../../utils/EmitterEvents";
-import { Backdrop, CircularProgress } from "@mui/material";
+import {
+  Backdrop,
+  Box, Button,
+  CircularProgress,
+  Dialog, DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import FormData from "form-data";
-import { DataURItoBlob, MakeID } from "../../utils/StringUtils";
-import html2canvas from "html2canvas";
-import { Tools } from "@babylonjs/core";
-import { Visualizer } from "../audioVisualizer/AudioVisualizer";
+import { MakeID } from "../../utils/StringUtils";
+import { BackgroundType, Modifiers } from "../../Constants";
+import { takeVisualizerScreenshot, uploadVisualizer } from "../../services/UploadVisualizer";
+import { SaveDialogue } from "./SaveDialogue";
+
+const isVideoBackgroundActive = (data: any) : boolean => {
+  const bgModifier = data[Modifiers.BACKGROUND];
+  return bgModifier["type"] === BackgroundType.VIDEO;
+}
 
 export const SavePopup = () => {
   const { data } = useModifiersContext();
-  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    async function onSavePresetPressed() {
-      setOpen(true);
-
-      try {
-        const backgroundDiv = document.querySelector("#background") as HTMLElement;
-        if(!backgroundDiv)
-          throw new Error("Cannot find Background div!");
-
-        // make a copy of canvas in webgl
-        await Tools.CreateScreenshotAsync(Visualizer.engine, Visualizer.camera, { width: 1024, height: 576 });
-        // copy the background canvas with the cached copy from babylon we obtain above
-        // this is actually pretty interesting because it helps us reduce amount of actions on the client
-        // there's no need to merge these 2 screenshots on the output
-        const backgroundScreenshot = await html2canvas(backgroundDiv, { onclone: (doc, el) => {
-          el.style.width = "1024px";
-          el.style.height = "576px";
-          }
-        });
-
-        var formData = new FormData();
-        formData.append("preview", DataURItoBlob(backgroundScreenshot.toDataURL()), "screenshot.png");
-
-        const name = MakeID(8);
-        formData.append("json", JSON.stringify(data));
-        formData.append("name", name);
-
-        await axios({
-          method: "post",
-          url: 'api/v1/visualizer/create',
-          headers: { 'Content-Type': 'multipart/form-data' },
-          data: formData,
-        });
-
-        console.log("Saved: %s", name);
-      }
-      catch (e) {
-        alert(e);
-      }
-      finally {
-        setOpen(false);
-      }
-
+    function onSaveButtonPressed() {
+      setIsOpen(true);
     }
-    Emitter.on(EmitterEvents.SAVE_PRESET, onSavePresetPressed);
+    Emitter.on(EmitterEvents.SAVE_PRESET, onSaveButtonPressed);
 
     return function() {
-      Emitter.off(EmitterEvents.SAVE_PRESET, onSavePresetPressed);
+      Emitter.off(EmitterEvents.SAVE_PRESET, onSaveButtonPressed);
+    };
+  }, []);
+
+  const handleSave = async (name: string) => {
+    setIsLoading(true);
+    try {
+      // reset camera before taking the screenshot
+      Emitter.emit(EmitterEvents.RESET_CAMERA);
+
+      const bgCanvas = await takeVisualizerScreenshot(isVideoBackgroundActive(data));
+      await uploadVisualizer(bgCanvas.toDataURL(), name, data);
+
+      console.log("Saved: %s", name);
+    } catch (e) {
+      alert(e);
+    } finally {
+      setIsLoading(false);
     }
-  }, [])
+  };
+
+  const handleClose = () => setIsOpen(false);
 
   return (
-    <>
+    <Box>
+      <SaveDialogue isOpen={isOpen}
+                    onClose={handleClose}
+                    onSave={handleSave} />
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}>
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.modal + 1 }}
+        open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-    </>
-  )
-}
+    </Box>
+  );
+};
