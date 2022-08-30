@@ -3,11 +3,13 @@ import { Footer } from "../../components/footer/Footer";
 import { HomePresetsList } from "../../components/homePresetsList/HomePresetsList";
 import { DoublePanel } from "../../components/doublePanel/DoublePanel";
 import { Box, Typography } from "@mui/material";
-import { RoundedIcon } from "../../components/roundedIcon/RoundedIcon";
 import { AiFillSave, AiOutlineCloudServer } from "react-icons/ai";
 import { ImageBox } from "../../components/imageBox/ImageBox";
 import { IoMdMusicalNote } from "react-icons/io";
-import { Zoom } from "react-awesome-reveal";
+import { IoShapes } from "react-icons/io5";
+import { IconWithTextItem } from "../../components/doublePanel/IconWithTextItem";
+import { MdWallpaper } from "react-icons/md";
+import { BsFillCameraVideoFill } from "react-icons/bs";
 
 export const Home = () => {
   return (
@@ -18,75 +20,55 @@ export const Home = () => {
         <Box padding="1rem 1.5rem">
           <Typography fontWeight="bold" variant="h2">Create and Inspire</Typography>
 
-          <Box display="flex" flexDirection="column" rowGap={4} marginTop={3} alignItems="flex-start">
+          <Box display="flex"
+               flexDirection="column"
+               rowGap={4}
+               marginTop={3}
+               alignItems="flex-start">
 
-            <Box display="flex" alignItems="center" flexDirection="row">
-              <Box paddingRight={3} marginLeft={2}>
-                <RoundedIcon icon={AiFillSave}
-                             iconSize={45}
-                             backgroundColor="white"
-                             padding={0.9}
-                             borderRadius={90} />
-              </Box>
-              <Box>
-                <Typography variant="h3" fontWeight="bold">Save your creations</Typography>
-                <Typography>
-                  Save and share your favorite presets with others with a single button press!
-                </Typography>
-              </Box>
-            </Box>
+            <IconWithTextItem icon={AiFillSave}
+                              header="Save your creations"
+                              body="Save and share your favorite presets with others with a single button press!"/>
 
-            <Box display="flex" alignItems="center" flexDirection="row">
-              <Box paddingRight={3} marginLeft={2}>
-                <RoundedIcon icon={AiOutlineCloudServer}
-                             iconSize={45}
-                             backgroundColor="white"
-                             padding={0.9}
-                             borderRadius={90} />
-              </Box>
-              <Box>
-                <Typography variant="h3" fontWeight="bold">Browse others</Typography>
-                <Typography>
-                  Hundreds of other creations are available for you to try out!
-                </Typography>
-              </Box>
-            </Box>
+            <IconWithTextItem icon={AiOutlineCloudServer}
+                              header="Browse others"
+                              body="Hundreds of other creations are available for you to try out!"/>
 
-            <Box display="flex" alignItems="center" flexDirection="row">
-              <Box paddingRight={3} marginLeft={2}>
-                <RoundedIcon icon={IoMdMusicalNote}
-                             iconSize={45}
-                             backgroundColor="white"
-                             padding={0.9}
-                             borderRadius={90} />
-              </Box>
-              <Box>
-                <Typography variant="h3" fontWeight="bold">Try with your songs</Typography>
-                <Typography>
-                  Yes you read it right, check it all out with your own songs!
-                </Typography>
-              </Box>
-            </Box>
-
+            <IconWithTextItem icon={IoMdMusicalNote}
+                              header="Try with your songs"
+                              body="Yes you read it right, check it all out with your own songs!"/>
           </Box>
         </Box>
         <ImageBox width="100%" height="450px" src="image1.png" />
       </DoublePanel>
 
-      <DoublePanel marginTop={5} spacing={5}>
+      <DoublePanel marginTop={5} spacing={5} invertOnSmallScreens>
         <ImageBox width="100%" height="450px" src="image1.png" />
+
         <Box padding="1rem 1.5rem">
-          <Typography fontWeight="bold" variant="h1">Save</Typography>
-          <RoundedIcon icon={AiFillSave}
-                       iconSize={55}
-                       backgroundColor="white"
-                       padding={1}
-                       margin={1}
-                       borderRadius={90} />
-          <Typography>
-            Save and share your favorite presets with others with a single button press!
-          </Typography>
+          <Typography fontWeight="bold" variant="h2">Experiment</Typography>
+
+        <Box display="flex"
+             flexDirection="column"
+             rowGap={4}
+             marginTop={3}
+             alignItems="flex-start">
+
+            <IconWithTextItem icon={IoShapes}
+                              header="Colors & Shapes"
+                              body="Pick your own colors and modify the shapes from the pre-existing presets!"/>
+
+            <IconWithTextItem icon={MdWallpaper}
+                              header="Backgrounds"
+                              body="Single Colors, Gradients, Animated Gradients, Youtube Video... whatever you want!"/>
+
+            <IconWithTextItem icon={BsFillCameraVideoFill}
+                              header="Effects"
+                              body="Screen Shake and Camera Distance are there to add as much vibe to your song as possible!"/>
+          </Box>
+
         </Box>
+
       </DoublePanel>
 
       <HomePresetsList cols={5} rows={2} />
