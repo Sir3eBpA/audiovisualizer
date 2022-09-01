@@ -19,13 +19,11 @@ export const Home = () => {
       <DoublePanel spacing={5} marginTop={5}>
         <Box padding="1rem 1.5rem">
           <Typography fontWeight="bold" variant="h2">Create and Inspire</Typography>
-
           <Box display="flex"
                flexDirection="column"
                rowGap={4}
                marginTop={3}
                alignItems="flex-start">
-
             <IconWithTextItem icon={AiFillSave}
                               header="Save your creations"
                               body="Save and share your favorite presets with others with a single button press!"/>
@@ -39,11 +37,11 @@ export const Home = () => {
                               body="Yes you read it right, check it all out with your own songs!"/>
           </Box>
         </Box>
-        <ImageBox width="100%" height="450px" src="image1.png" />
+        <video width="100%" height="450px" autoPlay muted loop src="preview1.webm" />
       </DoublePanel>
 
       <DoublePanel marginTop={5} spacing={5} invertOnSmallScreens>
-        <ImageBox width="100%" height="450px" src="image1.png" />
+        <video width="100%" height="450px" autoPlay muted loop src="preview1.webm" />
 
         <Box padding="1rem 1.5rem">
           <Typography fontWeight="bold" variant="h2">Experiment</Typography>
@@ -53,7 +51,6 @@ export const Home = () => {
              rowGap={4}
              marginTop={3}
              alignItems="flex-start">
-
             <IconWithTextItem icon={IoShapes}
                               header="Colors & Shapes"
                               body="Pick your own colors and modify the shapes from the pre-existing presets!"/>
@@ -66,9 +63,7 @@ export const Home = () => {
                               header="Effects"
                               body="Screen Shake and Camera Distance are there to add as much vibe to your song as possible!"/>
           </Box>
-
         </Box>
-
       </DoublePanel>
 
       <HomePresetsList cols={5} rows={2} />

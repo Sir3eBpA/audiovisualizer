@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { RoundedIcon } from "../roundedIcon/RoundedIcon";
-import { IoShapes } from "react-icons/io5";
 import { IconType } from "react-icons/lib";
 
 export type IconWithTextItemSettings = {
@@ -29,5 +28,5 @@ export const IconWithTextItem = (props: IconWithTextItemSettings) => {
         </Typography>
       </Box>
     </Box>
-  )
-}
+  );
+};

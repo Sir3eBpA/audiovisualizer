@@ -26,6 +26,11 @@ export const AnimationType = {
   INFINITE_SCROLL: "infinite-scroll"
 }
 
+export type Page = {
+  url: string,
+  name: string
+}
+
 export const MaxBoxesAmount: number = 5000;
 export const MaxBoxSize: number = 1000;
 
