@@ -4,13 +4,15 @@ import { PresetCardElement } from "./PresetCardElements";
 export type PresetCardData = {
   imageUrl: string,
   text: string,
-  marginTop?: number
+  id: string,
+  marginTop?: number,
+  onClick: (id: string) => {}
 }
 
 export const PresetCard = (props: PresetCardData) => {
   return (
     <Box mt={props.marginTop || 0}>
-      <PresetCardElement variant="outlined">
+      <PresetCardElement variant="outlined" onClick={() => props.onClick(props.id)}>
         <CardActionArea>
           <CardMedia component="img"
                      height="150px"

@@ -5,6 +5,9 @@ import { PresetPreview } from "../../models/Presets";
 import { Box, Container, Paper, useTheme } from "@mui/material";
 import { BreakpointsColumns, getColumnsAmount } from "../../utils/MUIUtils";
 import { Fade } from "react-awesome-reveal";
+import { asyncGetTopVisualizers } from "../../services/Visualizer";
+import Emitter from "../../utils/Emitter";
+import { EmitterEvents } from "../../utils/EmitterEvents";
 
 export type HomePresetsListData = {
   cols?: number,
@@ -35,11 +38,16 @@ export const HomePresetsList = (props: HomePresetsListData) => {
     const rows = props.rows || 2;
     const cols = props.cols || 5;
 
-    for (let i = 0; i < cols * rows; ++i) {
-      data.push({ name: i.toString(10), imageUrl: "" });
+    const fetchData = async () => {
+      const returnData = await asyncGetTopVisualizers(cols * rows);
+
+      for (let i = 0; i < returnData.length; ++i) {
+        data.push({ name: returnData[i].name, id:returnData[i].id, imageUrl: "" });
+      }
+      setData(data);
     }
 
-    setData(data);
+    fetchData();
   }, []);
 
   const updateDimensions = () => {
@@ -54,14 +62,24 @@ export const HomePresetsList = (props: HomePresetsListData) => {
   return (
     <Container maxWidth={false} disableGutters>
       <Paper>
-        <Fade direction="up" big={false} triggerOnce duration={500}>
+        <Fade direction="up"
+              big={false}
+              triggerOnce
+              duration={500}>
+
           <Box pb={2}>
             <PresetsList rowHeight={props.rowHeight}
                          cols={columns}
                          gap={props.gap || 0}>
-              {data.map(x => <PresetCard marginTop={4} imageUrl={x.imageUrl} text={x.name} key={x.name} />)}
+              {data.map(x => <PresetCard marginTop={4}
+                                         id={x.id}
+                                         imageUrl={x.imageUrl}
+                                         text={x.name}
+                                         onClick={(id: string) => Emitter.emit(EmitterEvents.OPEN_VISUALIZER, id)}
+                                         key={x.name} />)}
             </PresetsList>
           </Box>
+
         </Fade>
       </Paper>
     </Container>

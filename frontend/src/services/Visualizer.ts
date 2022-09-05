@@ -4,8 +4,48 @@ import { DataURItoBlob } from "../utils/StringUtils";
 import { Tools } from "@babylonjs/core";
 import { Visualizer } from "../components/audioVisualizer/AudioVisualizer";
 import html2canvas from "html2canvas";
+import { SortingMode } from "../utils/MongooseUtils";
 
-export const takeVisualizerScreenshot = async (isVideoBackground: boolean) : Promise<HTMLCanvasElement> => {
+//
+// Get Visualizers
+//
+
+export type VisualizerData = {
+  name: string,
+  json: string,
+  id: string,
+  previewImage?: string,
+}
+
+export const asyncGetVisualizerById = async (id: string): Promise<VisualizerData> => {
+  const res = await axios.get(`api/v1/visualizer/${id}`);
+
+  if (res.status === 404)
+    throw new Error("Cannot find visualizer with id: " + id);
+  else if (res.status !== 200)
+    throw new Error(`Encountered unknown code in ${asyncGetVisualizerById} - ${res.status}`);
+
+  return res.data as VisualizerData;
+};
+
+export const asyncGetTopVisualizers = async (amount: number, sort?: SortingMode): Promise<VisualizerData[]> => {
+  const limit = amount > 100 ? 100 : amount;
+
+  const res = await axios.get(
+    "api/v1/visualizer/getTop",
+    {
+      params: { limit, sort },
+      headers: { "Content-Type": "application/json" }
+    });
+
+  return res.data as VisualizerData[];
+};
+
+//
+// Create Visualizer
+//
+
+export const takeVisualizerScreenshot = async (isVideoBackground: boolean): Promise<HTMLCanvasElement> => {
   const backgroundDiv = document.querySelector("#background") as HTMLElement;
   if (!backgroundDiv)
     throw new Error("Cannot find Background div!");
@@ -16,8 +56,8 @@ export const takeVisualizerScreenshot = async (isVideoBackground: boolean) : Pro
   // there's no need to merge these 2 screenshots on the output
   const backgroundScreenshot = await html2canvas(backgroundDiv, {
     onclone: (doc, el) => {
-      if(isVideoBackground) {
-        el.style.backgroundColor = 'black';
+      if (isVideoBackground) {
+        el.style.backgroundColor = "black";
       }
 
       el.style.width = "1024px";
@@ -26,9 +66,9 @@ export const takeVisualizerScreenshot = async (isVideoBackground: boolean) : Pro
   });
 
   return backgroundScreenshot;
-}
+};
 
-export const uploadVisualizer = async (imageBase64: string, name: string, data: any) => {
+export const asyncCreateVisualizer = async (imageBase64: string, name: string, data: any) => {
   var formData = new FormData();
   formData.append("preview", DataURItoBlob(imageBase64), "screenshot.png");
   formData.append("json", JSON.stringify(data));
@@ -40,4 +80,4 @@ export const uploadVisualizer = async (imageBase64: string, name: string, data: 
     headers: { "Content-Type": "multipart/form-data" },
     data: formData
   });
-}
+};

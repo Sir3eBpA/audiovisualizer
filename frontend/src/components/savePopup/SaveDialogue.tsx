@@ -9,7 +9,7 @@ export type SaveDialogueSettings = {
 
 
 export const SaveDialogue = (props: SaveDialogueSettings) => {
-  const nameInput = useRef<HTMLInputElement>(null);
+  const nameInput = useRef<HTMLInputElement>();
 
   return (
     <Dialog open={props.isOpen} onClose={props.onClose}>
@@ -19,7 +19,7 @@ export const SaveDialogue = (props: SaveDialogueSettings) => {
           Please give a name to your visualizer preset. Others will see it so choose wisely!
         </DialogContentText>
         <TextField
-          ref={nameInput}
+          inputRef={nameInput}
           autoFocus
           margin="dense"
           id="name"

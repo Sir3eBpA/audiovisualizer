@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { MakeID } from "../../utils/StringUtils";
 import { BackgroundType, Modifiers } from "../../Constants";
-import { takeVisualizerScreenshot, uploadVisualizer } from "../../services/UploadVisualizer";
+import { takeVisualizerScreenshot, asyncCreateVisualizer } from "../../services/Visualizer";
 import { SaveDialogue } from "./SaveDialogue";
 
 const isVideoBackgroundActive = (data: any) : boolean => {
@@ -45,7 +45,7 @@ export const SavePopup = () => {
       Emitter.emit(EmitterEvents.RESET_CAMERA);
 
       const bgCanvas = await takeVisualizerScreenshot(isVideoBackgroundActive(data));
-      await uploadVisualizer(bgCanvas.toDataURL(), name, data);
+      await asyncCreateVisualizer(bgCanvas.toDataURL(), name, data);
 
       console.log("Saved: %s", name);
     } catch (e) {

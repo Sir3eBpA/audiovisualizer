@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { Visualizer } from "./pages/visualizer/Visualizer";
 import { ThemeProvider } from "@mui/material";
 import { Home } from "./pages/home/Home";
 import { Browse } from "./pages/browse/Browse";
 import { Page } from "./Constants";
 import { darkTheme } from "./themes/DarkTheme";
+import Emitter from "./utils/Emitter";
+import { EmitterEvents } from "./utils/EmitterEvents";
 
 export const Pages : Page[] = [
   {url: '/', name: "Home"},

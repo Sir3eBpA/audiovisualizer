@@ -10,8 +10,21 @@ import { IoShapes } from "react-icons/io5";
 import { IconWithTextItem } from "../../components/doublePanel/IconWithTextItem";
 import { MdWallpaper } from "react-icons/md";
 import { BsFillCameraVideoFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Emitter from "../../utils/Emitter";
+import { EmitterEvents } from "../../utils/EmitterEvents";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    function goToVisualizer(id: string) { navigate(`/visualizer/${id}`); }
+
+    Emitter.on(EmitterEvents.OPEN_VISUALIZER, goToVisualizer);
+    return function() { Emitter.off(EmitterEvents.OPEN_VISUALIZER, goToVisualizer); }
+  });
+
   return (
     <>
       <Header />

@@ -1,4 +1,5 @@
 export type PresetPreview = {
+  id: string,
   name: string,
   imageUrl: string,
 }
