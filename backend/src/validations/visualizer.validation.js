@@ -8,7 +8,13 @@ const createVisualizer = {
   file: Joi.string().required(),
 };
 
-const getVisualizers = {
+const getVisualizer = {
+  params: Joi.object().keys({
+    id: Joi.string().required().min(1).max(350),
+  }),
+};
+
+const getTopVisualizers = {
   query: Joi.object().keys({
     limit: Joi.number().optional(),
     sort: Joi.string().valid('asc', 'desc'),
@@ -17,5 +23,6 @@ const getVisualizers = {
 
 module.exports = {
   createVisualizer,
-  getVisualizers,
+  getVisualizer,
+  getTopVisualizers,
 };

@@ -14,8 +14,18 @@ const createVisualizer = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send();
 });
 
-const getVisualizers = catchAsync(async (req, res) => {
-  const data = await visualizerService.getVisualizers(req.query);
+const getVisualizer = catchAsync(async (req, res) => {
+  const data = await visualizerService.getVisualizer(req.params.id);
+  if (!data) {
+    res.status(httpStatus.NOT_FOUND).send();
+  }
+
+  const jsonData = JSON.stringify(data);
+  res.status(httpStatus.OK).send(jsonData);
+});
+
+const getTopVisualizers = catchAsync(async (req, res) => {
+  const data = await visualizerService.getTopVisualizers(req.query);
   if (!data || data.length === 0) {
     res.status(httpStatus.OK).send('{}');
   }
@@ -26,5 +36,6 @@ const getVisualizers = catchAsync(async (req, res) => {
 
 module.exports = {
   createVisualizer,
-  getVisualizers,
+  getVisualizer,
+  getTopVisualizers,
 };
