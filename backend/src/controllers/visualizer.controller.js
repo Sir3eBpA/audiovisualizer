@@ -2,10 +2,11 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { visualizerService } = require('../services');
 const ApiError = require('../utils/ApiError');
+const { s3Ip, s3Port } = require('../config/config');
 
 const createVisualizer = catchAsync(async (req, res) => {
   const incomingData = { ...req.body };
-  incomingData.previewUrl = req.file.location;
+  incomingData.previewUrl = new URL(`${req.protocol}://${s3Ip}:${s3Port}/${req.file.bucket}/${req.file.key}`).toString();
 
   const data = await visualizerService.createVisualizer(incomingData);
   if (!data) {
@@ -30,8 +31,10 @@ const getTopVisualizers = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send('{}');
   }
 
-  const jsonData = JSON.stringify(data);
-  res.status(httpStatus.OK).send(jsonData);
+  const amount = await visualizerService.getTotalVisualizersAmount();
+  const finalData = JSON.stringify({ visualizers: data, totalAmount: amount });
+
+  res.status(httpStatus.OK).send(finalData);
 });
 
 module.exports = {

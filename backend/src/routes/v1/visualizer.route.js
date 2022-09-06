@@ -13,7 +13,7 @@ router.post(
   controller.createVisualizer
 );
 
-router.get('/getTop', validate(visualizerValidation.getTopVisualizers), controller.getTopVisualizers);
+router.get('/top', validate(visualizerValidation.getTopVisualizers), controller.getTopVisualizers);
 
 router.get('/:id', validate(visualizerValidation.getVisualizer), controller.getVisualizer);
 

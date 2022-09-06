@@ -2,7 +2,7 @@ import { useModifiersContext } from "../../contexts/ModifiersContext";
 import { useEffect, useState } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { asyncGetVisualizerById, VisualizerData } from "../../services/Visualizer";
+import { asyncGetVisualizerById } from "../../services/Visualizer";
 
 export const PresetLoader = () => {
   const { data, setData } = useModifiersContext();

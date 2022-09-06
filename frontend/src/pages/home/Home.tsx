@@ -4,7 +4,6 @@ import { HomePresetsList } from "../../components/homePresetsList/HomePresetsLis
 import { DoublePanel } from "../../components/doublePanel/DoublePanel";
 import { Box, Typography } from "@mui/material";
 import { AiFillSave, AiOutlineCloudServer } from "react-icons/ai";
-import { ImageBox } from "../../components/imageBox/ImageBox";
 import { IoMdMusicalNote } from "react-icons/io";
 import { IoShapes } from "react-icons/io5";
 import { IconWithTextItem } from "../../components/doublePanel/IconWithTextItem";
@@ -79,7 +78,7 @@ export const Home = () => {
         </Box>
       </DoublePanel>
 
-      <HomePresetsList cols={5} rows={2} />
+      <HomePresetsList cols={5} rows={4} />
       <Footer />
     </>
   );

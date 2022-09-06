@@ -25,6 +25,8 @@ const envVarsSchema = Joi.object()
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     AWS_ACCESS_KEY_ID: Joi.string(),
     AWS_SECRET_ACCESS_KEY: Joi.string(),
+    S3_IP: Joi.string().description('local S3 bucket IP'),
+    S3_PORT: Joi.number().description('local S3 bucket port'),
   })
   .unknown();
 
@@ -65,4 +67,6 @@ module.exports = {
   },
   awsAccessKeyId: envVars.AWS_ACCESS_KEY_ID,
   awsSecretAccessKey: envVars.AWS_SECRET_ACCESS_KEY,
+  s3Ip: envVars.S3_IP,
+  s3Port: envVars.S3_PORT,
 };

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { PresetsList } from "./HomePresetsListElements";
 import { PresetCard } from "../presetCard/PresetCard";
-import { PresetPreview } from "../../models/Presets";
 import { Box, Container, Paper, useTheme } from "@mui/material";
 import { BreakpointsColumns, getColumnsAmount } from "../../utils/MUIUtils";
 import { Fade } from "react-awesome-reveal";
 import { asyncGetTopVisualizers } from "../../services/Visualizer";
 import Emitter from "../../utils/Emitter";
 import { EmitterEvents } from "../../utils/EmitterEvents";
+import { VisualizerData } from "../../models/VisualizerData";
 
 export type HomePresetsListData = {
   cols?: number,
@@ -30,21 +30,18 @@ const CalculateAvailableColumns = (width: number, breakpoints: any) => {
 
 export const HomePresetsList = (props: HomePresetsListData) => {
   const theme = useTheme();
-  const [data, setData] = useState<PresetPreview[]>([]);
+  const [data, setData] = useState<VisualizerData[]>([]);
   const [columns, setColumns] = useState(CalculateAvailableColumns(window.innerWidth, theme.breakpoints.values));
 
   useEffect(() => {
-    const data: PresetPreview[] = [];
+    const data: VisualizerData[] = [];
     const rows = props.rows || 2;
     const cols = props.cols || 5;
 
     const fetchData = async () => {
       const returnData = await asyncGetTopVisualizers(cols * rows);
-
-      for (let i = 0; i < returnData.length; ++i) {
-        data.push({ name: returnData[i].name, id:returnData[i].id, imageUrl: "" });
-      }
-      setData(data);
+      const visualizers = returnData.visualizers;
+      setData(visualizers);
     }
 
     fetchData();
@@ -73,7 +70,7 @@ export const HomePresetsList = (props: HomePresetsListData) => {
                          gap={props.gap || 0}>
               {data.map(x => <PresetCard marginTop={4}
                                          id={x.id}
-                                         imageUrl={x.imageUrl}
+                                         imageUrl={x.previewUrl}
                                          text={x.name}
                                          onClick={(id: string) => Emitter.emit(EmitterEvents.OPEN_VISUALIZER, id)}
                                          key={x.name} />)}

@@ -5,18 +5,11 @@ import { Tools } from "@babylonjs/core";
 import { Visualizer } from "../components/audioVisualizer/AudioVisualizer";
 import html2canvas from "html2canvas";
 import { SortingMode } from "../utils/MongooseUtils";
+import { VisualizerData, VisualizersCollection } from "../models/VisualizerData";
 
 //
 // Get Visualizers
 //
-
-export type VisualizerData = {
-  name: string,
-  json: string,
-  id: string,
-  previewImage?: string,
-}
-
 export const asyncGetVisualizerById = async (id: string): Promise<VisualizerData> => {
   const res = await axios.get(`api/v1/visualizer/${id}`);
 
@@ -28,17 +21,17 @@ export const asyncGetVisualizerById = async (id: string): Promise<VisualizerData
   return res.data as VisualizerData;
 };
 
-export const asyncGetTopVisualizers = async (amount: number, sort?: SortingMode): Promise<VisualizerData[]> => {
+export const asyncGetTopVisualizers = async (amount: number, sort?: SortingMode): Promise<VisualizersCollection> => {
   const limit = amount > 100 ? 100 : amount;
 
   const res = await axios.get(
-    "api/v1/visualizer/getTop",
+    "api/v1/visualizer/top",
     {
       params: { limit, sort },
       headers: { "Content-Type": "application/json" }
     });
 
-  return res.data as VisualizerData[];
+  return res.data as VisualizersCollection;
 };
 
 //
@@ -50,7 +43,7 @@ export const takeVisualizerScreenshot = async (isVideoBackground: boolean): Prom
   if (!backgroundDiv)
     throw new Error("Cannot find Background div!");
   // make a copy of canvas in webgl
-  await Tools.CreateScreenshotAsync(Visualizer.engine, Visualizer.camera, { width: 1024, height: 576 });
+  await Tools.CreateScreenshotAsync(Visualizer.engine, Visualizer.camera, { width: 600, height: 800 });
   // copy the background canvas with the cached copy from babylon we obtain above
   // this is actually pretty interesting because it helps us reduce amount of actions on the client
   // there's no need to merge these 2 screenshots on the output
@@ -60,8 +53,8 @@ export const takeVisualizerScreenshot = async (isVideoBackground: boolean): Prom
         el.style.backgroundColor = "black";
       }
 
-      el.style.width = "1024px";
-      el.style.height = "576px";
+      el.style.width = "600px";
+      el.style.height = "800px";
     }
   });
 

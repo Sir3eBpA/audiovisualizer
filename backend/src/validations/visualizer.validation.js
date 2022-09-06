@@ -18,6 +18,7 @@ const getTopVisualizers = {
   query: Joi.object().keys({
     limit: Joi.number().optional(),
     sort: Joi.string().valid('asc', 'desc'),
+    skip: Joi.number().optional(),
   }),
 };
 
