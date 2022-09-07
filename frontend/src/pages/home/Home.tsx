@@ -1,6 +1,5 @@
 import { Header } from "../../components/header/Header";
 import { Footer } from "../../components/footer/Footer";
-import { HomePresetsList } from "../../components/homePresetsList/HomePresetsList";
 import { DoublePanel } from "../../components/doublePanel/DoublePanel";
 import { Box, Typography } from "@mui/material";
 import { AiFillSave, AiOutlineCloudServer } from "react-icons/ai";
@@ -10,9 +9,10 @@ import { IconWithTextItem } from "../../components/doublePanel/IconWithTextItem"
 import { MdWallpaper } from "react-icons/md";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Emitter from "../../utils/Emitter";
 import { EmitterEvents } from "../../utils/EmitterEvents";
+import { HomePresetsListContainer } from "../../components/presetsList/containers/HomePresetsListContainer";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ export const Home = () => {
       </DoublePanel>
 
       <DoublePanel marginTop={5} spacing={5} invertOnSmallScreens>
-        <video width="100%" height="450px" autoPlay muted loop src="preview1.webm" />
+        <video width="100%" height="450px" autoPlay muted loop src="preview2.webm" />
 
         <Box padding="1rem 1.5rem">
           <Typography fontWeight="bold" variant="h2">Experiment</Typography>
@@ -78,7 +78,7 @@ export const Home = () => {
         </Box>
       </DoublePanel>
 
-      <HomePresetsList cols={5} rows={4} />
+      <HomePresetsListContainer maxCols={5} rows={3} />
       <Footer />
     </>
   );

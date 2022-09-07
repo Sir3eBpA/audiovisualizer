@@ -27,8 +27,9 @@ const getVisualizer = catchAsync(async (req, res) => {
 
 const getTopVisualizers = catchAsync(async (req, res) => {
   const data = await visualizerService.getTopVisualizers(req.query);
+
   if (!data || data.length === 0) {
-    res.status(httpStatus.OK).send('{}');
+    res.status(httpStatus.NOT_FOUND).send();
   }
 
   const amount = await visualizerService.getTotalVisualizersAmount();

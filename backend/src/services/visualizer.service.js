@@ -6,9 +6,12 @@ const createVisualizer = async (body) => {
 };
 
 const getTopVisualizers = async (props) => {
+  const skip = parseInt(props.skip, 10) || 0;
+  const limit = (parseInt(props.limit, 10) || 20) + skip;
+
   const visualizers = await Visualizer.find()
-    .limit(parseInt(props.limit, 10) || 20)
-    .skip(parseInt(props.skip, 10) || 0)
+    .skip(skip)
+    .limit(limit)
     .sort(props.sort || 'asc')
     .exec();
   return visualizers;

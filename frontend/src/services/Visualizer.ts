@@ -21,15 +21,18 @@ export const asyncGetVisualizerById = async (id: string): Promise<VisualizerData
   return res.data as VisualizerData;
 };
 
-export const asyncGetTopVisualizers = async (amount: number, sort?: SortingMode): Promise<VisualizersCollection> => {
+export const asyncGetTopVisualizers = async (amount: number, skip?: number, sort?: SortingMode): Promise<VisualizersCollection> => {
   const limit = amount > 100 ? 100 : amount;
 
   const res = await axios.get(
     "api/v1/visualizer/top",
     {
-      params: { limit, sort },
+      params: { limit, sort, skip },
       headers: { "Content-Type": "application/json" }
     });
+
+  if(res.status !== 200)
+    throw new Error('No data');
 
   return res.data as VisualizersCollection;
 };

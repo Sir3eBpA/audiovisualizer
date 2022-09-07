@@ -1,11 +1,12 @@
 import { Header } from "../../components/header/Header";
 import { Footer } from "../../components/footer/Footer";
+import { BrowsePresetsListContainer } from "../../components/presetsList/containers/BrowsePresetsListContainer";
 
 export const Browse = () => {
   return (
     <>
       <Header />
-      <p>hi</p>
+      <BrowsePresetsListContainer prefetchAmount={5}/>
       <Footer />
     </>
   );

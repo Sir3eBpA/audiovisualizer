@@ -7,5 +7,5 @@ export type VisualizerData = {
 
 export type VisualizersCollection = {
   visualizers: VisualizerData[],
-  totalCount: number,
+  totalAmount: number,
 }
