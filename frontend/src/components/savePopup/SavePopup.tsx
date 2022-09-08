@@ -26,6 +26,7 @@ export const SavePopup = () => {
   const { data } = useModifiersContext();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     function onSaveButtonPressed() {
@@ -48,8 +49,11 @@ export const SavePopup = () => {
       await asyncCreateVisualizer(bgCanvas.toDataURL(), name, data);
 
       console.log("Saved: %s", name);
-    } catch (e) {
-      alert(e);
+    } catch (ex) {
+      if(ex instanceof Error)
+        setError(ex.message);
+      else
+        alert(ex);
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +65,8 @@ export const SavePopup = () => {
     <Box>
       <SaveDialogue isOpen={isOpen}
                     onClose={handleClose}
-                    onSave={handleSave} />
+                    onSave={handleSave}
+                    errorMessage={error} />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.modal + 1 }}
         open={isLoading}>

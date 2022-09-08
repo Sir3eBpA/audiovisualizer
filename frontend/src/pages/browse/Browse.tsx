@@ -6,7 +6,7 @@ export const Browse = () => {
   return (
     <>
       <Header />
-      <BrowsePresetsListContainer prefetchAmount={5}/>
+      <BrowsePresetsListContainer prefetchAmount={10}/>
       <Footer />
     </>
   );

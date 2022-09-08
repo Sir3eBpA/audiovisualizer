@@ -3,6 +3,7 @@ import { VisualizerData } from "../../../models/VisualizerData";
 import { asyncGetTopVisualizers } from "../../../services/Visualizer";
 import { PresetsList } from "../PresetsList";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { LoadingSpinner } from "../../loadingSpinner/LoadingSpinner";
 
 export type BrowsePresetsListContainerSettings = {
   prefetchAmount?: number,
@@ -32,8 +33,8 @@ export const BrowsePresetsListContainer = (props: BrowsePresetsListContainerSett
 
   return (
     <InfiniteScroll next={fetchData}
-                    hasMore={data.length <= amount}
-                    loader={<h1>LOADING...</h1>}
+                    hasMore={data.length < amount}
+                    loader={ <LoadingSpinner boxSettings={{ margin:5 }}/> }
                     dataLength={data.length}>
       <PresetsList data={data} />
     </InfiniteScroll>
